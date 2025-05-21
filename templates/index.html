@@ -1,32 +1,32 @@
 {% extends 'base.html' %}
 
-{% block title %}Workshop Management System - Home{% endblock %}
+{% block title %}Sistema de Gestión de Taller - Inicio{% endblock %}
 
 {% block content %}
 <div class="container">
     <div class="jumbotron p-5 mb-4 bg-dark rounded-3">
         <div class="container-fluid py-5">
-            <h1 class="display-5 fw-bold">Workshop Management System</h1>
+            <h1 class="display-5 fw-bold">Sistema de Gestión de Taller</h1>
             <p class="col-md-8 fs-4">
-                Track mechanical units through Traffic Control, Workshop, and Warehouse departments.
+                Seguimiento de unidades mecánicas a través de Control de Tráfico, Taller y Almacén.
             </p>
             {% if current_user.is_authenticated %}
                 {% if current_user.department == 'traffic_control' %}
                 <div class="mt-4">
                     <a href="{{ url_for('traffic_control_dashboard') }}" class="btn btn-primary btn-lg">
-                        <i class="fas fa-car me-2"></i>Go to Traffic Control Dashboard
+                        <i class="fas fa-car me-2"></i>Ir al Panel de Control de Tráfico
                     </a>
                 </div>
                 {% elif current_user.department == 'workshop' %}
                 <div class="mt-4">
                     <a href="{{ url_for('workshop_dashboard') }}" class="btn btn-primary btn-lg">
-                        <i class="fas fa-wrench me-2"></i>Go to Workshop Dashboard
+                        <i class="fas fa-wrench me-2"></i>Ir al Panel del Taller
                     </a>
                 </div>
                 {% elif current_user.department == 'warehouse' %}
                 <div class="mt-4">
                     <a href="{{ url_for('warehouse_dashboard') }}" class="btn btn-primary btn-lg">
-                        <i class="fas fa-warehouse me-2"></i>Go to Warehouse Dashboard
+                        <i class="fas fa-warehouse me-2"></i>Ir al Panel del Almacén
                     </a>
                 </div>
                 {% elif current_user.department == 'admin' %}
@@ -34,17 +34,17 @@
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <a href="{{ url_for('traffic_control_dashboard') }}" class="btn btn-primary btn-lg w-100">
-                                <i class="fas fa-car me-2"></i>Traffic Control
+                                <i class="fas fa-car me-2"></i>Control de Tráfico
                             </a>
                         </div>
                         <div class="col-md-4 mb-3">
                             <a href="{{ url_for('workshop_dashboard') }}" class="btn btn-primary btn-lg w-100">
-                                <i class="fas fa-wrench me-2"></i>Workshop
+                                <i class="fas fa-wrench me-2"></i>Taller
                             </a>
                         </div>
                         <div class="col-md-4 mb-3">
                             <a href="{{ url_for('warehouse_dashboard') }}" class="btn btn-primary btn-lg w-100">
-                                <i class="fas fa-warehouse me-2"></i>Warehouse
+                                <i class="fas fa-warehouse me-2"></i>Almacén
                             </a>
                         </div>
                     </div>
@@ -53,7 +53,7 @@
             {% else %}
                 <div class="mt-4">
                     <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg">
-                        <i class="fas fa-sign-in-alt me-2"></i>Login to Start
+                        <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión
                     </a>
                 </div>
             {% endif %}
@@ -65,8 +65,8 @@
             <div class="card h-100">
                 <div class="card-body text-center">
                     <i class="fas fa-car fa-3x mb-3 text-primary"></i>
-                    <h5 class="card-title">Traffic Control</h5>
-                    <p class="card-text">Register new mechanical units and confirm completion of repairs.</p>
+                    <h5 class="card-title">Control de Tráfico</h5>
+                    <p class="card-text">Registra nuevas unidades mecánicas y confirma la finalización de reparaciones.</p>
                 </div>
             </div>
         </div>
@@ -74,8 +74,8 @@
             <div class="card h-100">
                 <div class="card-body text-center">
                     <i class="fas fa-wrench fa-3x mb-3 text-primary"></i>
-                    <h5 class="card-title">Workshop</h5>
-                    <p class="card-text">Manage unit repairs and request parts from the warehouse.</p>
+                    <h5 class="card-title">Taller</h5>
+                    <p class="card-text">Administra reparaciones de unidades y solicita piezas al almacén.</p>
                 </div>
             </div>
         </div>
@@ -83,8 +83,8 @@
             <div class="card h-100">
                 <div class="card-body text-center">
                     <i class="fas fa-warehouse fa-3x mb-3 text-primary"></i>
-                    <h5 class="card-title">Warehouse</h5>
-                    <p class="card-text">Process part requests and notify when parts are available.</p>
+                    <h5 class="card-title">Almacén</h5>
+                    <p class="card-text">Procesa solicitudes de piezas y notifica cuando están disponibles.</p>
                 </div>
             </div>
         </div>

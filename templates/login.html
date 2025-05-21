@@ -1,21 +1,21 @@
 {% extends 'base.html' %}
 
-{% block title %}Workshop Management System - Login{% endblock %}
+{% block title %}Sistema de Gestión de Taller - Iniciar Sesión{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-md-6 col-lg-4">
         <div class="card shadow-sm">
             <div class="card-header bg-primary text-white text-center">
-                <h4 class="mb-0"><i class="fas fa-sign-in-alt me-2"></i>Login</h4>
+                <h4 class="mb-0"><i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión</h4>
             </div>
             <div class="card-body">
                 <form method="POST" action="{{ url_for('login') }}">
                     {{ form.hidden_tag() }}
                     
                     <div class="mb-3">
-                        <label for="username" class="form-label">{{ form.username.label }}</label>
-                        {{ form.username(class="form-control", placeholder="Enter username") }}
+                        <label for="username" class="form-label">Usuario</label>
+                        {{ form.username(class="form-control", placeholder="Ingrese su usuario") }}
                         {% if form.username.errors %}
                             <div class="invalid-feedback d-block">
                                 {% for error in form.username.errors %}
@@ -26,8 +26,8 @@
                     </div>
                     
                     <div class="mb-3">
-                        <label for="password" class="form-label">{{ form.password.label }}</label>
-                        {{ form.password(class="form-control", placeholder="Enter password") }}
+                        <label for="password" class="form-label">Contraseña</label>
+                        {{ form.password(class="form-control", placeholder="Ingrese su contraseña") }}
                         {% if form.password.errors %}
                             <div class="invalid-feedback d-block">
                                 {% for error in form.password.errors %}
@@ -38,12 +38,12 @@
                     </div>
                     
                     <div class="d-grid gap-2">
-                        {{ form.submit(class="btn btn-primary") }}
+                        {{ form.submit(class="btn btn-primary", value="Ingresar") }}
                     </div>
                 </form>
             </div>
             <div class="card-footer text-center text-muted">
-                <small>Default admin credentials: admin / admin</small>
+                <small>Credenciales de administrador por defecto: admin / admin</small>
             </div>
         </div>
     </div>
