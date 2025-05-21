@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block title %}Warehouse Dashboard{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2><i class="fas fa-warehouse me-2"></i>Warehouse Dashboard</h2>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0"><i class="fas fa-exclamation-circle me-2"></i>Pending Part Requests</h5>
+            </div>
+            <div class="card-body">
+                {% if pending_requests %}
+                <div class="table-responsive">
+                    <table class="table table-hover datatable">
+                        <thead>
+                            <tr>
+                                <th>Unit</th>
+                                <th>Part Name</th>
+                                <th>Quantity</th>
+                                <th>Requested By</th>
+                                <th>Date Requested</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for request in pending_requests %}
+                            <tr>
+                                <td>{{ request.unit.unit_number }}</td>
+                                <td>{{ request.part_name }}</td>
+                                <td>{{ request.quantity }}</td>
+                                <td>{{ request.requested_by.username }}</td>
+                                <td>{{ request.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                <td>
+                                    <a href="{{ url_for('manage_part_request', request_id=request.id) }}" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-edit me-1"></i>Update
+                                    </a>
+                                    <a href="{{ url_for('unit_history', unit_id=request.unit_id) }}" class="btn btn-sm btn-info">
+                                        <i class="fas fa-info-circle"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>No pending part requests.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-check me-2"></i>Available Parts (Waiting for Installation)</h5>
+            </div>
+            <div class="card-body">
+                {% if available_requests %}
+                <div class="table-responsive">
+                    <table class="table table-hover datatable">
+                        <thead>
+                            <tr>
+                                <th>Unit</th>
+                                <th>Part Name</th>
+                                <th>Quantity</th>
+                                <th>Requested By</th>
+                                <th>Date Requested</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for request in available_requests %}
+                            <tr>
+                                <td>{{ request.unit.unit_number }}</td>
+                                <td>{{ request.part_name }}</td>
+                                <td>{{ request.quantity }}</td>
+                                <td>{{ request.requested_by.username }}</td>
+                                <td>{{ request.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                <td>
+                                    <a href="{{ url_for('manage_part_request', request_id=request.id) }}" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-edit me-1"></i>Update
+                                    </a>
+                                    <a href="{{ url_for('unit_history', unit_id=request.unit_id) }}" class="btn btn-sm btn-info">
+                                        <i class="fas fa-info-circle"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>No parts are currently available for installation.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize DataTables
+        $('.datatable').DataTable({
+            responsive: true,
+            order: [[4, 'desc']],
+            language: {
+                search: "Filter records:",
+                lengthMenu: "Show _MENU_ requests per page",
+                zeroRecords: "No matching requests found",
+                info: "Showing _START_ to _END_ of _TOTAL_ requests",
+                infoEmpty: "No requests available",
+                infoFiltered: "(filtered from _MAX_ total requests)"
+            }
+        });
+    });
+</script>
+{% endblock %}

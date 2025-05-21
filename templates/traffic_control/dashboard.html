@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block title %}Traffic Control Dashboard{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h2><i class="fas fa-car me-2"></i>Traffic Control Dashboard</h2>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="{{ url_for('register_unit') }}" class="btn btn-success">
+            <i class="fas fa-plus me-1"></i>Register New Unit
+        </a>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-clipboard-list me-2"></i>Recently Registered Units</h5>
+            </div>
+            <div class="card-body">
+                {% if registered_units %}
+                <div class="table-responsive">
+                    <table class="table table-hover datatable">
+                        <thead>
+                            <tr>
+                                <th>Unit Number</th>
+                                <th>Operator</th>
+                                <th>Description</th>
+                                <th>Registered On</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for unit in registered_units %}
+                            <tr>
+                                <td>{{ unit.unit_number }}</td>
+                                <td>{{ unit.operator_name }}</td>
+                                <td>{{ unit.description }}</td>
+                                <td>{{ unit.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                <td>
+                                    <a href="{{ url_for('unit_history', unit_id=unit.id) }}" class="btn btn-sm btn-info">
+                                        <i class="fas fa-history"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>No recently registered units.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-check-circle me-2"></i>Units Ready for Delivery</h5>
+            </div>
+            <div class="card-body">
+                {% if completed_units %}
+                <div class="table-responsive">
+                    <table class="table table-hover datatable">
+                        <thead>
+                            <tr>
+                                <th>Unit Number</th>
+                                <th>Operator</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for unit in completed_units %}
+                            <tr>
+                                <td>{{ unit.unit_number }}</td>
+                                <td>{{ unit.operator_name }}</td>
+                                <td>{{ unit.description }}</td>
+                                <td>
+                                    <a href="{{ url_for('unit_history', unit_id=unit.id) }}" class="btn btn-sm btn-info">
+                                        <i class="fas fa-history"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>No units are currently ready for delivery.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize DataTables
+        $('.datatable').DataTable({
+            responsive: true,
+            order: [[3, 'desc']],
+            language: {
+                search: "Filter records:",
+                lengthMenu: "Show _MENU_ units per page",
+                zeroRecords: "No matching units found",
+                info: "Showing _START_ to _END_ of _TOTAL_ units",
+                infoEmpty: "No units available",
+                infoFiltered: "(filtered from _MAX_ total units)"
+            }
+        });
+    });
+</script>
+{% endblock %}
