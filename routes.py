@@ -117,9 +117,36 @@ def confirm_completion(unit_id):
     
     unit = Unit.query.get_or_404(unit_id)
     
-    # Only units in workshop or pending parts can be completed
+    # Check if the unit is already completed
+    if unit.current_status == 'completed':
+        # Unit is completed and ready to be received by traffic control
+        form = UpdateStatusForm(obj=unit)
+        form.unit_id.data = unit.id
+        form.new_status.data = 'received'
+        
+        if request.method == 'POST' and form.validate_on_submit():
+            old_status = unit.current_status
+            unit.current_status = 'received'
+            
+            # Record the status change
+            status_change = StatusChange(
+                unit=unit,
+                old_status=old_status,
+                new_status='received',
+                notes=form.notes.data or 'Unidad recibida por Control de Tráfico',
+                changed_by_id=current_user.id
+            )
+            db.session.add(status_change)
+            db.session.commit()
+            
+            flash(f'Unidad {unit.unit_number} ha sido marcada como recibida por Control de Tráfico.', 'success')
+            return redirect(url_for('traffic_control_dashboard'))
+        
+        return render_template('traffic_control/confirm_receipt.html', form=form, unit=unit)
+    
+    # Only units in workshop or pending parts can be marked as completed by workshop
     if unit.current_status not in ['in_workshop', 'waiting_parts']:
-        flash('This unit is not ready for completion.', 'warning')
+        flash('Esta unidad no está lista para ser completada.', 'warning')
         return redirect(url_for('traffic_control_dashboard'))
     
     form = UpdateStatusForm(obj=unit)
@@ -141,7 +168,7 @@ def confirm_completion(unit_id):
         db.session.add(status_change)
         db.session.commit()
         
-        flash(f'Unit {unit.unit_number} has been marked as completed!', 'success')
+        flash(f'Unidad {unit.unit_number} ha sido marcada como completada!', 'success')
         return redirect(url_for('traffic_control_dashboard'))
     
     return render_template('traffic_control/confirm_completion.html', form=form, unit=unit)
@@ -158,12 +185,16 @@ def workshop_dashboard():
     registered_units = Unit.query.filter_by(current_status='registered').order_by(Unit.created_at).all()
     in_workshop_units = Unit.query.filter_by(current_status='in_workshop').order_by(Unit.created_at).all()
     parts_pending_units = Unit.query.filter_by(current_status='waiting_parts').order_by(Unit.created_at).all()
+    completed_units = Unit.query.filter_by(current_status='completed').order_by(Unit.created_at).all()
+    received_units = Unit.query.filter_by(current_status='received').order_by(Unit.created_at).all()
     
     return render_template(
         'workshop/dashboard.html',
         registered_units=registered_units,
         in_workshop_units=in_workshop_units,
-        parts_pending_units=parts_pending_units
+        parts_pending_units=parts_pending_units,
+        completed_units=completed_units,
+        received_units=received_units
     )
 
 @app.route('/workshop/unit/<int:unit_id>', methods=['GET', 'POST'])

@@ -85,6 +85,9 @@
                                 <td>{{ unit.operator_name }}</td>
                                 <td>{{ unit.description }}</td>
                                 <td>
+                                    <a href="{{ url_for('confirm_completion', unit_id=unit.id) }}" class="btn btn-sm btn-success">
+                                        <i class="fas fa-check me-1"></i>Confirmar Recepción
+                                    </a>
                                     <a href="{{ url_for('unit_history', unit_id=unit.id) }}" class="btn btn-sm btn-info">
                                         <i class="fas fa-history"></i>
                                     </a>

@@ -44,7 +44,8 @@ class Unit(db.Model):
             'registered': 'Registrada',
             'in_workshop': 'En Taller',
             'waiting_parts': 'Esperando Repuestos',
-            'completed': 'Completada'
+            'completed': 'Completada',
+            'received': 'Recibida por Control'
         }
         return status_map.get(self.current_status, self.current_status.title())
     
