@@ -79,8 +79,8 @@ class PartRequest(db.Model):
     
     def get_status_display(self):
         status_map = {
-            'pending': 'Pending',
-            'available': 'Available',
-            'installed': 'Installed'
+            'pending': 'Pendiente',
+            'available': 'Disponible',
+            'installed': 'Instalada'
         }
         return status_map.get(self.status, self.status.title())
