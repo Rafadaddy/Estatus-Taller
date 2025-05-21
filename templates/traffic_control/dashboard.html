@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
 
-{% block title %}Traffic Control Dashboard{% endblock %}
+{% block title %}Panel de Control de Tráfico{% endblock %}
 
 {% block content %}
 <div class="row mb-4">
     <div class="col-md-8">
-        <h2><i class="fas fa-car me-2"></i>Traffic Control Dashboard</h2>
+        <h2><i class="fas fa-car me-2"></i>Panel de Control de Tráfico</h2>
     </div>
     <div class="col-md-4 text-end">
         <a href="{{ url_for('register_unit') }}" class="btn btn-success">
-            <i class="fas fa-plus me-1"></i>Register New Unit
+            <i class="fas fa-plus me-1"></i>Registrar Nueva Unidad
         </a>
     </div>
 </div>
@@ -18,7 +18,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header bg-primary text-white">
-                <h5 class="mb-0"><i class="fas fa-clipboard-list me-2"></i>Recently Registered Units</h5>
+                <h5 class="mb-0"><i class="fas fa-clipboard-list me-2"></i>Unidades Registradas Recientemente</h5>
             </div>
             <div class="card-body">
                 {% if registered_units %}
@@ -26,11 +26,11 @@
                     <table class="table table-hover datatable">
                         <thead>
                             <tr>
-                                <th>Unit Number</th>
-                                <th>Operator</th>
-                                <th>Description</th>
-                                <th>Registered On</th>
-                                <th>Actions</th>
+                                <th>Número de Unidad</th>
+                                <th>Operador</th>
+                                <th>Descripción</th>
+                                <th>Registrada El</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -52,7 +52,7 @@
                 </div>
                 {% else %}
                 <div class="alert alert-info">
-                    <i class="fas fa-info-circle me-2"></i>No recently registered units.
+                    <i class="fas fa-info-circle me-2"></i>No hay unidades registradas recientemente.
                 </div>
                 {% endif %}
             </div>
@@ -64,7 +64,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header bg-success text-white">
-                <h5 class="mb-0"><i class="fas fa-check-circle me-2"></i>Units Ready for Delivery</h5>
+                <h5 class="mb-0"><i class="fas fa-check-circle me-2"></i>Unidades Listas para Entrega</h5>
             </div>
             <div class="card-body">
                 {% if completed_units %}
@@ -72,10 +72,10 @@
                     <table class="table table-hover datatable">
                         <thead>
                             <tr>
-                                <th>Unit Number</th>
-                                <th>Operator</th>
-                                <th>Description</th>
-                                <th>Actions</th>
+                                <th>Número de Unidad</th>
+                                <th>Operador</th>
+                                <th>Descripción</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -96,7 +96,7 @@
                 </div>
                 {% else %}
                 <div class="alert alert-info">
-                    <i class="fas fa-info-circle me-2"></i>No units are currently ready for delivery.
+                    <i class="fas fa-info-circle me-2"></i>No hay unidades listas para entrega actualmente.
                 </div>
                 {% endif %}
             </div>
@@ -113,12 +113,12 @@
             responsive: true,
             order: [[3, 'desc']],
             language: {
-                search: "Filter records:",
-                lengthMenu: "Show _MENU_ units per page",
-                zeroRecords: "No matching units found",
-                info: "Showing _START_ to _END_ of _TOTAL_ units",
-                infoEmpty: "No units available",
-                infoFiltered: "(filtered from _MAX_ total units)"
+                search: "Filtrar registros:",
+                lengthMenu: "Mostrar _MENU_ unidades por página",
+                zeroRecords: "No se encontraron unidades coincidentes",
+                info: "Mostrando _START_ a _END_ de _TOTAL_ unidades",
+                infoEmpty: "No hay unidades disponibles",
+                infoFiltered: "(filtrado de _MAX_ unidades totales)"
             }
         });
     });

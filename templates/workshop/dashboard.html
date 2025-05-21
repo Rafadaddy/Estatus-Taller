@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
-{% block title %}Workshop Dashboard{% endblock %}
+{% block title %}Panel del Taller{% endblock %}
 
 {% block content %}
 <div class="row mb-4">
     <div class="col">
-        <h2><i class="fas fa-wrench me-2"></i>Workshop Dashboard</h2>
+        <h2><i class="fas fa-wrench me-2"></i>Panel del Taller</h2>
     </div>
 </div>
 
@@ -13,7 +13,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header bg-info text-white">
-                <h5 class="mb-0"><i class="fas fa-clipboard-list me-2"></i>Units Awaiting Service</h5>
+                <h5 class="mb-0"><i class="fas fa-clipboard-list me-2"></i>Unidades Esperando Servicio</h5>
             </div>
             <div class="card-body">
                 {% if registered_units %}
@@ -21,11 +21,11 @@
                     <table class="table table-hover datatable">
                         <thead>
                             <tr>
-                                <th>Unit Number</th>
-                                <th>Operator</th>
-                                <th>Description</th>
-                                <th>Registered On</th>
-                                <th>Actions</th>
+                                <th>Número de Unidad</th>
+                                <th>Operador</th>
+                                <th>Descripción</th>
+                                <th>Registrada El</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -37,7 +37,7 @@
                                 <td>{{ unit.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
                                 <td>
                                     <a href="{{ url_for('unit_details', unit_id=unit.id) }}" class="btn btn-sm btn-primary">
-                                        <i class="fas fa-tools me-1"></i>Service
+                                        <i class="fas fa-tools me-1"></i>Servicio
                                     </a>
                                 </td>
                             </tr>
@@ -47,7 +47,7 @@
                 </div>
                 {% else %}
                 <div class="alert alert-info">
-                    <i class="fas fa-info-circle me-2"></i>No units are currently awaiting service.
+                    <i class="fas fa-info-circle me-2"></i>No hay unidades esperando servicio actualmente.
                 </div>
                 {% endif %}
             </div>
@@ -59,7 +59,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header bg-primary text-white">
-                <h5 class="mb-0"><i class="fas fa-cogs me-2"></i>Units In Workshop</h5>
+                <h5 class="mb-0"><i class="fas fa-cogs me-2"></i>Unidades En Taller</h5>
             </div>
             <div class="card-body">
                 {% if in_workshop_units %}
@@ -67,11 +67,11 @@
                     <table class="table table-hover datatable">
                         <thead>
                             <tr>
-                                <th>Unit Number</th>
-                                <th>Operator</th>
-                                <th>Description</th>
-                                <th>Registered On</th>
-                                <th>Actions</th>
+                                <th>Número de Unidad</th>
+                                <th>Operador</th>
+                                <th>Descripción</th>
+                                <th>Registrada El</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -83,7 +83,7 @@
                                 <td>{{ unit.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
                                 <td>
                                     <a href="{{ url_for('unit_details', unit_id=unit.id) }}" class="btn btn-sm btn-primary">
-                                        <i class="fas fa-wrench me-1"></i>Update
+                                        <i class="fas fa-wrench me-1"></i>Actualizar
                                     </a>
                                 </td>
                             </tr>
@@ -93,7 +93,7 @@
                 </div>
                 {% else %}
                 <div class="alert alert-info">
-                    <i class="fas fa-info-circle me-2"></i>No units are currently in the workshop.
+                    <i class="fas fa-info-circle me-2"></i>No hay unidades actualmente en el taller.
                 </div>
                 {% endif %}
             </div>
@@ -105,7 +105,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header bg-warning text-dark">
-                <h5 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Units Waiting for Parts</h5>
+                <h5 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Unidades Esperando Piezas</h5>
             </div>
             <div class="card-body">
                 {% if parts_pending_units %}
@@ -113,11 +113,11 @@
                     <table class="table table-hover datatable">
                         <thead>
                             <tr>
-                                <th>Unit Number</th>
-                                <th>Operator</th>
-                                <th>Description</th>
-                                <th>Registered On</th>
-                                <th>Actions</th>
+                                <th>Número de Unidad</th>
+                                <th>Operador</th>
+                                <th>Descripción</th>
+                                <th>Registrada El</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -129,7 +129,7 @@
                                 <td>{{ unit.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
                                 <td>
                                     <a href="{{ url_for('unit_details', unit_id=unit.id) }}" class="btn btn-sm btn-primary">
-                                        <i class="fas fa-search me-1"></i>View
+                                        <i class="fas fa-search me-1"></i>Ver
                                     </a>
                                 </td>
                             </tr>
@@ -139,7 +139,7 @@
                 </div>
                 {% else %}
                 <div class="alert alert-info">
-                    <i class="fas fa-info-circle me-2"></i>No units are currently waiting for parts.
+                    <i class="fas fa-info-circle me-2"></i>No hay unidades esperando piezas actualmente.
                 </div>
                 {% endif %}
             </div>
@@ -156,12 +156,12 @@
             responsive: true,
             order: [[3, 'desc']],
             language: {
-                search: "Filter records:",
-                lengthMenu: "Show _MENU_ units per page",
-                zeroRecords: "No matching units found",
-                info: "Showing _START_ to _END_ of _TOTAL_ units",
-                infoEmpty: "No units available",
-                infoFiltered: "(filtered from _MAX_ total units)"
+                search: "Filtrar registros:",
+                lengthMenu: "Mostrar _MENU_ unidades por página",
+                zeroRecords: "No se encontraron unidades coincidentes",
+                info: "Mostrando _START_ a _END_ de _TOTAL_ unidades",
+                infoEmpty: "No hay unidades disponibles",
+                infoFiltered: "(filtrado de _MAX_ unidades totales)"
             }
         });
     });
