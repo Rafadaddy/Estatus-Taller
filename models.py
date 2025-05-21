@@ -41,10 +41,10 @@ class Unit(db.Model):
     
     def get_status_display(self):
         status_map = {
-            'registered': 'Registered',
-            'in_workshop': 'In Workshop',
-            'waiting_parts': 'Waiting for Parts',
-            'completed': 'Completed'
+            'registered': 'Registrada',
+            'in_workshop': 'En Taller',
+            'waiting_parts': 'Esperando Repuestos',
+            'completed': 'Completada'
         }
         return status_map.get(self.current_status, self.current_status.title())
     
