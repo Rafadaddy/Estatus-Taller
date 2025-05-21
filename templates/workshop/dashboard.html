@@ -101,7 +101,7 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row mb-4">
     <div class="col-12">
         <div class="card">
             <div class="card-header bg-warning text-dark">
@@ -142,6 +142,106 @@
                     <i class="fas fa-info-circle me-2"></i>No hay unidades esperando piezas actualmente.
                 </div>
                 {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-check-double me-2"></i>Unidades Completadas y Procesadas</h5>
+            </div>
+            <div class="card-body">
+                <ul class="nav nav-tabs" id="completedTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="waiting-tab" data-bs-toggle="tab" data-bs-target="#waiting" type="button" role="tab">
+                            <i class="fas fa-hourglass-half me-1"></i>Esperando Confirmación
+                            <span class="badge bg-primary">{{ completed_units|length }}</span>
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="received-tab" data-bs-toggle="tab" data-bs-target="#received" type="button" role="tab">
+                            <i class="fas fa-check-circle me-1"></i>Recibidas por Control
+                            <span class="badge bg-success">{{ received_units|length }}</span>
+                        </button>
+                    </li>
+                </ul>
+                
+                <div class="tab-content mt-3" id="completedTabsContent">
+                    <!-- Unidades completadas esperando confirmación -->
+                    <div class="tab-pane fade show active" id="waiting" role="tabpanel">
+                        {% if completed_units %}
+                        <div class="table-responsive">
+                            <table class="table table-hover datatable">
+                                <thead>
+                                    <tr>
+                                        <th>Número de Unidad</th>
+                                        <th>Operador</th>
+                                        <th>Descripción</th>
+                                        <th>Completada El</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for unit in completed_units %}
+                                    <tr>
+                                        <td>{{ unit.unit_number }}</td>
+                                        <td>{{ unit.operator_name }}</td>
+                                        <td>{{ unit.description }}</td>
+                                        <td>{{ unit.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                        <td>
+                                            <span class="badge bg-warning text-dark">Esperando recepción</span>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% else %}
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>No hay unidades esperando confirmación de recepción.
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Unidades recibidas por Control de Tráfico -->
+                    <div class="tab-pane fade" id="received" role="tabpanel">
+                        {% if received_units %}
+                        <div class="table-responsive">
+                            <table class="table table-hover datatable">
+                                <thead>
+                                    <tr>
+                                        <th>Número de Unidad</th>
+                                        <th>Operador</th>
+                                        <th>Descripción</th>
+                                        <th>Recibida El</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for unit in received_units %}
+                                    <tr>
+                                        <td>{{ unit.unit_number }}</td>
+                                        <td>{{ unit.operator_name }}</td>
+                                        <td>{{ unit.description }}</td>
+                                        <td>{{ unit.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                        <td>
+                                            <span class="badge bg-success">{{ unit.get_status_display() }}</span>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% else %}
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>No hay unidades recibidas por Control de Tráfico recientemente.
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
