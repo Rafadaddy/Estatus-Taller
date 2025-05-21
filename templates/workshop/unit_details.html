@@ -1,18 +1,18 @@
 {% extends 'base.html' %}
 
-{% block title %}Unit Details - {{ unit.unit_number }}{% endblock %}
+{% block title %}Detalles de Unidad - {{ unit.unit_number }}{% endblock %}
 
 {% block content %}
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ url_for('workshop_dashboard') }}">Workshop</a></li>
-        <li class="breadcrumb-item active">Unit Details</li>
+        <li class="breadcrumb-item"><a href="{{ url_for('workshop_dashboard') }}">Taller</a></li>
+        <li class="breadcrumb-item active">Detalles de la Unidad</li>
     </ol>
 </nav>
 
 <div class="row mb-4">
     <div class="col-md-6">
-        <h2>Unit: {{ unit.unit_number }}</h2>
+        <h2>Unidad: {{ unit.unit_number }}</h2>
     </div>
     <div class="col-md-6 text-end">
         <span class="badge rounded-pill 
@@ -31,23 +31,23 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-header bg-secondary text-white">
-                <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Unit Information</h5>
+                <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Información de la Unidad</h5>
             </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
-                        <p><strong>Unit Number:</strong> {{ unit.unit_number }}</p>
-                        <p><strong>Operator:</strong> {{ unit.operator_name }}</p>
-                        <p><strong>Status:</strong> {{ unit.get_status_display() }}</p>
+                        <p><strong>Número de Unidad:</strong> {{ unit.unit_number }}</p>
+                        <p><strong>Operador:</strong> {{ unit.operator_name }}</p>
+                        <p><strong>Estado:</strong> {{ unit.get_status_display() }}</p>
                     </div>
                     <div class="col-md-6">
-                        <p><strong>Registered By:</strong> {{ unit.registered_by.username }}</p>
-                        <p><strong>Registration Date:</strong> {{ unit.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+                        <p><strong>Registrado Por:</strong> {{ unit.registered_by.username }}</p>
+                        <p><strong>Fecha de Registro:</strong> {{ unit.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
                     </div>
                 </div>
                 <div class="row mt-2">
                     <div class="col-12">
-                        <p><strong>Description:</strong></p>
+                        <p><strong>Descripción:</strong></p>
                         <p>{{ unit.description }}</p>
                     </div>
                 </div>
@@ -60,7 +60,7 @@
     <div class="col-md-6 mb-4">
         <div class="card h-100">
             <div class="card-header bg-primary text-white">
-                <h5 class="mb-0"><i class="fas fa-exchange-alt me-2"></i>Update Status</h5>
+                <h5 class="mb-0"><i class="fas fa-exchange-alt me-2"></i>Actualizar Estado</h5>
             </div>
             <div class="card-body">
                 <form method="POST" action="{{ url_for('unit_details', unit_id=unit.id) }}">
@@ -81,7 +81,7 @@
                     
                     <div class="mb-3">
                         <label for="notes" class="form-label">{{ status_form.notes.label }}</label>
-                        {{ status_form.notes(class="form-control", rows=3, placeholder="Enter notes about this status change") }}
+                        {{ status_form.notes(class="form-control", rows=3, placeholder="Ingrese notas sobre este cambio de estado") }}
                         {% if status_form.notes.errors %}
                             <div class="invalid-feedback d-block">
                                 {% for error in status_form.notes.errors %}
@@ -102,7 +102,7 @@
     <div class="col-md-6 mb-4">
         <div class="card h-100">
             <div class="card-header bg-warning text-dark">
-                <h5 class="mb-0"><i class="fas fa-tools me-2"></i>Request Parts</h5>
+                <h5 class="mb-0"><i class="fas fa-tools me-2"></i>Solicitar Piezas</h5>
             </div>
             <div class="card-body">
                 <form method="POST" action="{{ url_for('unit_details', unit_id=unit.id) }}">
@@ -111,7 +111,7 @@
                     
                     <div class="mb-3">
                         <label for="part_name" class="form-label">{{ part_form.part_name.label }}</label>
-                        {{ part_form.part_name(class="form-control", placeholder="Enter part name or number") }}
+                        {{ part_form.part_name(class="form-control", placeholder="Ingrese nombre o número de pieza") }}
                         {% if part_form.part_name.errors %}
                             <div class="invalid-feedback d-block">
                                 {% for error in part_form.part_name.errors %}
@@ -135,7 +135,7 @@
                     
                     <div class="mb-3">
                         <label for="notes" class="form-label">{{ part_form.notes.label }}</label>
-                        {{ part_form.notes(class="form-control", rows=3, placeholder="Additional information about the part") }}
+                        {{ part_form.notes(class="form-control", rows=3, placeholder="Información adicional sobre la pieza") }}
                         {% if part_form.notes.errors %}
                             <div class="invalid-feedback d-block">
                                 {% for error in part_form.notes.errors %}
@@ -158,7 +158,7 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-header bg-info text-white">
-                <h5 class="mb-0"><i class="fas fa-list-alt me-2"></i>Part Requests</h5>
+                <h5 class="mb-0"><i class="fas fa-list-alt me-2"></i>Solicitudes de Piezas</h5>
             </div>
             <div class="card-body">
                 {% if part_requests %}
@@ -166,12 +166,12 @@
                     <table class="table table-hover datatable">
                         <thead>
                             <tr>
-                                <th>Part Name</th>
-                                <th>Quantity</th>
-                                <th>Status</th>
-                                <th>Requested By</th>
-                                <th>Date Requested</th>
-                                <th>Notes</th>
+                                <th>Nombre de Pieza</th>
+                                <th>Cantidad</th>
+                                <th>Estado</th>
+                                <th>Solicitado Por</th>
+                                <th>Fecha de Solicitud</th>
+                                <th>Notas</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -198,7 +198,7 @@
                 </div>
                 {% else %}
                 <div class="alert alert-info">
-                    <i class="fas fa-info-circle me-2"></i>No part requests for this unit.
+                    <i class="fas fa-info-circle me-2"></i>No hay solicitudes de piezas para esta unidad.
                 </div>
                 {% endif %}
             </div>
@@ -210,7 +210,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header bg-secondary text-white">
-                <h5 class="mb-0"><i class="fas fa-history me-2"></i>Status History</h5>
+                <h5 class="mb-0"><i class="fas fa-history me-2"></i>Historial de Estados</h5>
             </div>
             <div class="card-body">
                 {% if history %}
@@ -218,11 +218,11 @@
                     <table class="table table-hover datatable">
                         <thead>
                             <tr>
-                                <th>Date</th>
-                                <th>Old Status</th>
-                                <th>New Status</th>
-                                <th>Changed By</th>
-                                <th>Notes</th>
+                                <th>Fecha</th>
+                                <th>Estado Anterior</th>
+                                <th>Nuevo Estado</th>
+                                <th>Cambiado Por</th>
+                                <th>Notas</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -231,12 +231,12 @@
                                 <td>{{ change.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
                                 <td>
                                     {% if change.old_status %}
-                                        {{ change.old_status.replace('_', ' ').title() }}
+                                        {{ change.old_status.replace('registered', 'Registrada').replace('in_workshop', 'En Taller').replace('waiting_parts', 'Esperando Piezas').replace('completed', 'Completada').replace('_', ' ').title() }}
                                     {% else %}
-                                        <span class="text-muted">Initial</span>
+                                        <span class="text-muted">Inicial</span>
                                     {% endif %}
                                 </td>
-                                <td>{{ change.new_status.replace('_', ' ').title() }}</td>
+                                <td>{{ change.new_status.replace('registered', 'Registrada').replace('in_workshop', 'En Taller').replace('waiting_parts', 'Esperando Piezas').replace('completed', 'Completada').replace('_', ' ').title() }}</td>
                                 <td>{{ change.changed_by.username }}</td>
                                 <td>{{ change.notes }}</td>
                             </tr>
@@ -246,7 +246,7 @@
                 </div>
                 {% else %}
                 <div class="alert alert-info">
-                    <i class="fas fa-info-circle me-2"></i>No status change history for this unit.
+                    <i class="fas fa-info-circle me-2"></i>No hay historial de cambios de estado para esta unidad.
                 </div>
                 {% endif %}
             </div>
@@ -263,11 +263,11 @@
             responsive: true,
             order: [[0, 'desc']],
             language: {
-                search: "Filter records:",
-                zeroRecords: "No matching records found",
-                info: "Showing _START_ to _END_ of _TOTAL_ records",
-                infoEmpty: "No records available",
-                infoFiltered: "(filtered from _MAX_ total records)"
+                search: "Filtrar registros:",
+                zeroRecords: "No se encontraron registros coincidentes",
+                info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                infoEmpty: "No hay registros disponibles",
+                infoFiltered: "(filtrado de _MAX_ registros totales)"
             }
         });
     });

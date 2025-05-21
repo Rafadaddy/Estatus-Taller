@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 
-{% block title %}Part Request Management{% endblock %}
+{% block title %}Gestión de Solicitud de Piezas{% endblock %}
 
 {% block content %}
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ url_for('warehouse_dashboard') }}">Warehouse</a></li>
-        <li class="breadcrumb-item active">Part Request Management</li>
+        <li class="breadcrumb-item"><a href="{{ url_for('warehouse_dashboard') }}">Almacén</a></li>
+        <li class="breadcrumb-item active">Gestión de Solicitud de Piezas</li>
     </ol>
 </nav>
 
@@ -14,25 +14,25 @@
     <div class="col-md-8">
         <div class="card shadow-sm">
             <div class="card-header bg-primary text-white">
-                <h4 class="mb-0"><i class="fas fa-tools me-2"></i>Update Part Request</h4>
+                <h4 class="mb-0"><i class="fas fa-tools me-2"></i>Actualizar Solicitud de Pieza</h4>
             </div>
             <div class="card-body">
                 <div class="alert alert-info mb-4">
-                    <h5><i class="fas fa-info-circle me-2"></i>Part Request Information</h5>
+                    <h5><i class="fas fa-info-circle me-2"></i>Información de Solicitud de Pieza</h5>
                     <div class="row mt-3">
                         <div class="col-md-6">
-                            <p><strong>Unit Number:</strong> {{ unit.unit_number }}</p>
-                            <p><strong>Part Name:</strong> {{ part_request.part_name }}</p>
-                            <p><strong>Quantity:</strong> {{ part_request.quantity }}</p>
+                            <p><strong>Número de Unidad:</strong> {{ unit.unit_number }}</p>
+                            <p><strong>Nombre de Pieza:</strong> {{ part_request.part_name }}</p>
+                            <p><strong>Cantidad:</strong> {{ part_request.quantity }}</p>
                         </div>
                         <div class="col-md-6">
-                            <p><strong>Current Status:</strong> {{ part_request.get_status_display() }}</p>
-                            <p><strong>Requested By:</strong> {{ part_request.requested_by.username }}</p>
-                            <p><strong>Requested On:</strong> {{ part_request.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+                            <p><strong>Estado Actual:</strong> {{ part_request.get_status_display() }}</p>
+                            <p><strong>Solicitado Por:</strong> {{ part_request.requested_by.username }}</p>
+                            <p><strong>Solicitado El:</strong> {{ part_request.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
                         </div>
                     </div>
                     {% if part_request.notes %}
-                    <p><strong>Notes:</strong> {{ part_request.notes }}</p>
+                    <p><strong>Notas:</strong> {{ part_request.notes }}</p>
                     {% endif %}
                 </div>
 
@@ -54,7 +54,7 @@
                     
                     <div class="mb-3">
                         <label for="notes" class="form-label">{{ form.notes.label }}</label>
-                        {{ form.notes(class="form-control", rows=3, placeholder="Enter update notes") }}
+                        {{ form.notes(class="form-control", rows=3, placeholder="Ingrese notas de actualización") }}
                         {% if form.notes.errors %}
                             <div class="invalid-feedback d-block">
                                 {% for error in form.notes.errors %}
@@ -66,7 +66,7 @@
                     
                     <div class="d-flex justify-content-between">
                         <a href="{{ url_for('warehouse_dashboard') }}" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left me-1"></i>Back
+                            <i class="fas fa-arrow-left me-1"></i>Volver
                         </a>
                         {{ form.submit(class="btn btn-success") }}
                     </div>

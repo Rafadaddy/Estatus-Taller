@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
-{% block title %}User Management{% endblock %}
+{% block title %}Gestión de Usuarios{% endblock %}
 
 {% block content %}
 <div class="row mb-4">
     <div class="col-md-6">
-        <h2><i class="fas fa-users-cog me-2"></i>User Management</h2>
+        <h2><i class="fas fa-users-cog me-2"></i>Gestión de Usuarios</h2>
     </div>
 </div>
 
@@ -13,7 +13,7 @@
     <div class="col-md-8 mb-4">
         <div class="card">
             <div class="card-header bg-primary text-white">
-                <h5 class="mb-0"><i class="fas fa-user-friends me-2"></i>Users</h5>
+                <h5 class="mb-0"><i class="fas fa-user-friends me-2"></i>Usuarios</h5>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -21,9 +21,9 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Username</th>
-                                <th>Email</th>
-                                <th>Department</th>
+                                <th>Usuario</th>
+                                <th>Correo Electrónico</th>
+                                <th>Departamento</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -32,7 +32,7 @@
                                 <td>{{ user.id }}</td>
                                 <td>{{ user.username }}</td>
                                 <td>{{ user.email }}</td>
-                                <td>{{ user.department.replace('_', ' ').title() }}</td>
+                                <td>{{ user.department.replace('traffic_control', 'Control de Tráfico').replace('workshop', 'Taller').replace('warehouse', 'Almacén').replace('admin', 'Administrador').replace('_', ' ').title() }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -45,7 +45,7 @@
     <div class="col-md-4">
         <div class="card">
             <div class="card-header bg-success text-white">
-                <h5 class="mb-0"><i class="fas fa-user-plus me-2"></i>Create User</h5>
+                <h5 class="mb-0"><i class="fas fa-user-plus me-2"></i>Crear Usuario</h5>
             </div>
             <div class="card-body">
                 <form method="POST" action="{{ url_for('manage_users') }}">
@@ -53,7 +53,7 @@
                     
                     <div class="mb-3">
                         <label for="username" class="form-label">{{ form.username.label }}</label>
-                        {{ form.username(class="form-control", placeholder="Enter username") }}
+                        {{ form.username(class="form-control", placeholder="Ingrese nombre de usuario") }}
                         {% if form.username.errors %}
                             <div class="invalid-feedback d-block">
                                 {% for error in form.username.errors %}
@@ -65,7 +65,7 @@
                     
                     <div class="mb-3">
                         <label for="email" class="form-label">{{ form.email.label }}</label>
-                        {{ form.email(class="form-control", placeholder="Enter email") }}
+                        {{ form.email(class="form-control", placeholder="Ingrese correo electrónico") }}
                         {% if form.email.errors %}
                             <div class="invalid-feedback d-block">
                                 {% for error in form.email.errors %}
@@ -89,7 +89,7 @@
                     
                     <div class="mb-3">
                         <label for="password" class="form-label">{{ form.password.label }}</label>
-                        {{ form.password(class="form-control", placeholder="Enter password") }}
+                        {{ form.password(class="form-control", placeholder="Ingrese contraseña") }}
                         {% if form.password.errors %}
                             <div class="invalid-feedback d-block">
                                 {% for error in form.password.errors %}
@@ -101,7 +101,7 @@
                     
                     <div class="mb-3">
                         <label for="confirm_password" class="form-label">{{ form.confirm_password.label }}</label>
-                        {{ form.confirm_password(class="form-control", placeholder="Confirm password") }}
+                        {{ form.confirm_password(class="form-control", placeholder="Confirme contraseña") }}
                         {% if form.confirm_password.errors %}
                             <div class="invalid-feedback d-block">
                                 {% for error in form.confirm_password.errors %}
@@ -129,11 +129,11 @@
             responsive: true,
             order: [[0, 'asc']],
             language: {
-                search: "Filter users:",
-                zeroRecords: "No matching users found",
-                info: "Showing _START_ to _END_ of _TOTAL_ users",
-                infoEmpty: "No users available",
-                infoFiltered: "(filtered from _MAX_ total users)"
+                search: "Filtrar usuarios:",
+                zeroRecords: "No se encontraron usuarios coincidentes",
+                info: "Mostrando _START_ a _END_ de _TOTAL_ usuarios",
+                infoEmpty: "No hay usuarios disponibles",
+                infoFiltered: "(filtrado de _MAX_ usuarios totales)"
             }
         });
     });

@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 
-{% block title %}Confirm Unit Completion{% endblock %}
+{% block title %}Confirmar Finalización de Unidad{% endblock %}
 
 {% block content %}
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ url_for('traffic_control_dashboard') }}">Traffic Control</a></li>
-        <li class="breadcrumb-item active">Confirm Completion</li>
+        <li class="breadcrumb-item"><a href="{{ url_for('traffic_control_dashboard') }}">Control de Tráfico</a></li>
+        <li class="breadcrumb-item active">Confirmar Finalización</li>
     </ol>
 </nav>
 
@@ -14,22 +14,22 @@
     <div class="col-md-8">
         <div class="card shadow-sm">
             <div class="card-header bg-success text-white">
-                <h4 class="mb-0"><i class="fas fa-check-circle me-2"></i>Confirm Unit Completion</h4>
+                <h4 class="mb-0"><i class="fas fa-check-circle me-2"></i>Confirmar Finalización de Unidad</h4>
             </div>
             <div class="card-body">
                 <div class="alert alert-info mb-4">
-                    <h5><i class="fas fa-info-circle me-2"></i>Unit Information</h5>
+                    <h5><i class="fas fa-info-circle me-2"></i>Información de la Unidad</h5>
                     <div class="row mt-3">
                         <div class="col-md-6">
-                            <p><strong>Unit Number:</strong> {{ unit.unit_number }}</p>
-                            <p><strong>Operator:</strong> {{ unit.operator_name }}</p>
+                            <p><strong>Número de Unidad:</strong> {{ unit.unit_number }}</p>
+                            <p><strong>Operador:</strong> {{ unit.operator_name }}</p>
                         </div>
                         <div class="col-md-6">
-                            <p><strong>Current Status:</strong> {{ unit.get_status_display() }}</p>
-                            <p><strong>Registered On:</strong> {{ unit.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+                            <p><strong>Estado Actual:</strong> {{ unit.get_status_display() }}</p>
+                            <p><strong>Registrada El:</strong> {{ unit.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
                         </div>
                     </div>
-                    <p><strong>Description:</strong> {{ unit.description }}</p>
+                    <p><strong>Descripción:</strong> {{ unit.description }}</p>
                 </div>
 
                 <form method="POST" action="{{ url_for('confirm_completion', unit_id=unit.id) }}">
@@ -38,8 +38,8 @@
                     {{ form.new_status }}
                     
                     <div class="mb-3">
-                        <label for="notes" class="form-label">Completion Notes</label>
-                        {{ form.notes(class="form-control", rows=3, placeholder="Enter completion notes") }}
+                        <label for="notes" class="form-label">Notas de Finalización</label>
+                        {{ form.notes(class="form-control", rows=3, placeholder="Ingrese notas de finalización") }}
                         {% if form.notes.errors %}
                             <div class="invalid-feedback d-block">
                                 {% for error in form.notes.errors %}
@@ -51,7 +51,7 @@
                     
                     <div class="d-flex justify-content-between">
                         <a href="{{ url_for('traffic_control_dashboard') }}" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left me-1"></i>Back
+                            <i class="fas fa-arrow-left me-1"></i>Volver
                         </a>
                         {{ form.submit(class="btn btn-success") }}
                     </div>
