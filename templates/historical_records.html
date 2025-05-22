@@ -143,7 +143,33 @@
             responsive: true,
             dom: 'Bfrtip',
             buttons: [
-                'copy', 'csv', 'excel', 'pdf', 'print'
+                {
+                    extend: 'copy',
+                    text: '<i class="fas fa-copy"></i> Copiar',
+                    className: 'btn btn-sm btn-secondary'
+                },
+                {
+                    extend: 'csv',
+                    text: '<i class="fas fa-file-csv"></i> CSV',
+                    className: 'btn btn-sm btn-secondary'
+                },
+                {
+                    extend: 'excel',
+                    text: '<i class="fas fa-file-excel"></i> Excel',
+                    className: 'btn btn-sm btn-success',
+                    title: 'Registro_Histórico_' + new Date().toISOString().slice(0, 10)
+                },
+                {
+                    extend: 'pdf',
+                    text: '<i class="fas fa-file-pdf"></i> PDF',
+                    className: 'btn btn-sm btn-danger',
+                    title: 'Registro_Histórico_' + new Date().toISOString().slice(0, 10)
+                },
+                {
+                    extend: 'print',
+                    text: '<i class="fas fa-print"></i> Imprimir',
+                    className: 'btn btn-sm btn-primary'
+                }
             ],
             order: [[3, 'desc']],
             language: {
@@ -152,7 +178,13 @@
                 zeroRecords: "No se encontraron unidades coincidentes",
                 info: "Mostrando _START_ a _END_ de _TOTAL_ unidades",
                 infoEmpty: "No hay unidades disponibles",
-                infoFiltered: "(filtrado de _MAX_ unidades totales)"
+                infoFiltered: "(filtrado de _MAX_ unidades totales)",
+                paginate: {
+                    first: "Primero",
+                    last: "Último",
+                    next: "Siguiente",
+                    previous: "Anterior"
+                }
             }
         });
     });
