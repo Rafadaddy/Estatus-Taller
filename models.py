@@ -106,7 +106,18 @@ class Notification(db.Model):
         old_status_display = status_map.get(old_status, old_status.title())
         new_status_display = status_map.get(new_status, new_status.title())
         
-        message = f'La unidad {unit.unit_number} ha cambiado de estado: {old_status_display} → {new_status_display}'
+        username = user.username if user else "Sistema"
+        dept = ""
+        if user:
+            dept_map = {
+                'traffic_control': 'Control de Tráfico',
+                'workshop': 'Taller',
+                'warehouse': 'Almacén',
+                'admin': 'Administrador'
+            }
+            dept = dept_map.get(user.department, user.department)
+        
+        message = f'La unidad {unit.unit_number} ha cambiado de estado: {old_status_display} → {new_status_display} por {username} ({dept})'
         
         # Crear notificaciones para cada usuario de los departamentos seleccionados
         users = User.query.filter(User.department.in_(departments_to_notify)).all()
@@ -159,7 +170,19 @@ class Notification(db.Model):
     def create_for_part_request(cls, part_request, user=None):
         """Crea notificaciones para solicitudes de piezas"""
         unit = Unit.query.get(part_request.unit_id)
-        message = f'Nueva solicitud de pieza: {part_request.part_name} para unidad {unit.unit_number}'
+        
+        username = user.username if user else "Sistema"
+        dept = ""
+        if user:
+            dept_map = {
+                'traffic_control': 'Control de Tráfico',
+                'workshop': 'Taller',
+                'warehouse': 'Almacén',
+                'admin': 'Administrador'
+            }
+            dept = dept_map.get(user.department, user.department)
+        
+        message = f'Nueva solicitud de pieza: {part_request.part_name} (cant. {part_request.quantity}) para unidad {unit.unit_number} por {username} ({dept})'
         
         # Notificar a todos los usuarios del almacén y admin
         users = User.query.filter(User.department.in_(['warehouse', 'admin'])).all()

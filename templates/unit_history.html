@@ -99,8 +99,14 @@
                                 <p>
                                     <small class="text-muted">
                                         <i class="fas fa-clock me-1"></i>{{ change.created_at.strftime('%Y-%m-%d %H:%M') }}
-                                        <i class="fas fa-user ms-2 me-1"></i>{{ change.changed_by.username }}
                                     </small>
+                                </p>
+                                <p>
+                                    <span class="badge bg-secondary">
+                                        <i class="fas fa-user me-1"></i>Realizado por: 
+                                        <strong>{{ change.changed_by.username }}</strong>
+                                        ({{ change.changed_by.department.replace('traffic_control', 'Control de Tráfico').replace('workshop', 'Taller').replace('warehouse', 'Almacén').replace('admin', 'Administrador') }})
+                                    </span>
                                 </p>
                             </div>
                             <div class="timeline-body">
@@ -109,6 +115,82 @@
                         </div>
                     </div>
                     {% endfor %}
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>No hay cambios de estado registrados para esta unidad.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-users me-2"></i>Registro de Cambios por Usuario</h5>
+            </div>
+            <div class="card-body">
+                {% if status_changes %}
+                <div class="table-responsive">
+                    <table class="table table-hover datatable">
+                        <thead>
+                            <tr>
+                                <th>Fecha y Hora</th>
+                                <th>Usuario</th>
+                                <th>Departamento</th>
+                                <th>Acción</th>
+                                <th>Estado Anterior</th>
+                                <th>Nuevo Estado</th>
+                                <th>Notas</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for change in status_changes %}
+                            <tr>
+                                <td>{{ change.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                <td>{{ change.changed_by.username }}</td>
+                                <td>{{ change.changed_by.department.replace('traffic_control', 'Control de Tráfico').replace('workshop', 'Taller').replace('warehouse', 'Almacén').replace('admin', 'Administrador') }}</td>
+                                <td>
+                                    {% if change.old_status %}
+                                    Cambio de estado
+                                    {% else %}
+                                    Registro inicial
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if change.old_status %}
+                                    <span class="badge
+                                        {% if change.old_status == 'registered' %}bg-info
+                                        {% elif change.old_status == 'in_workshop' %}bg-primary
+                                        {% elif change.old_status == 'waiting_parts' %}bg-warning
+                                        {% elif change.old_status == 'completed' %}bg-success
+                                        {% elif change.old_status == 'received' %}bg-success
+                                        {% endif %}">
+                                        {{ change.old_status.replace('registered', 'Registrada').replace('in_workshop', 'En Taller').replace('waiting_parts', 'Esperando Piezas').replace('completed', 'Completada').replace('received', 'Recibida').replace('_', ' ') }}
+                                    </span>
+                                    {% else %}
+                                    N/A
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="badge
+                                        {% if change.new_status == 'registered' %}bg-info
+                                        {% elif change.new_status == 'in_workshop' %}bg-primary
+                                        {% elif change.new_status == 'waiting_parts' %}bg-warning
+                                        {% elif change.new_status == 'completed' %}bg-success
+                                        {% elif change.new_status == 'received' %}bg-success
+                                        {% endif %}">
+                                        {{ change.new_status.replace('registered', 'Registrada').replace('in_workshop', 'En Taller').replace('waiting_parts', 'Esperando Piezas').replace('completed', 'Completada').replace('received', 'Recibida').replace('_', ' ') }}
+                                    </span>
+                                </td>
+                                <td>{{ change.notes }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
                 {% else %}
                 <div class="alert alert-info">
