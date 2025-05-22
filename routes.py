@@ -108,10 +108,26 @@ def register_unit():
         # Crear notificaciones para informar al taller sobre la nueva unidad
         Notification.create_for_unit_register(unit, current_user)
         
-        flash(f'Unit {unit.unit_number} has been registered successfully!', 'success')
-        return redirect(url_for('traffic_control_dashboard'))
+        flash(f'Unidad {unit.unit_number} ha sido registrada correctamente!', 'success')
+        return redirect(url_for('print_unit_report', unit_id=unit.id))
     
     return render_template('traffic_control/register_unit.html', form=form)
+
+# Ruta para generar e imprimir el reporte de la unidad en formato media carta
+@app.route('/traffic_control/print_report/<int:unit_id>')
+@login_required
+def print_unit_report(unit_id):
+    if current_user.department not in ['traffic_control', 'admin', 'workshop']:
+        flash('Acceso denegado. No tienes permiso para ver esta página.', 'danger')
+        return redirect(url_for('index'))
+    
+    unit = Unit.query.get_or_404(unit_id)
+    status_changes = StatusChange.query.filter_by(unit_id=unit_id).order_by(StatusChange.created_at.desc()).all()
+    
+    # Pasar la fecha actual para el reporte
+    now = datetime.utcnow()
+    
+    return render_template('traffic_control/print_report.html', unit=unit, status_changes=status_changes, now=now)
 
 @app.route('/traffic_control/confirm_completion/<int:unit_id>', methods=['GET', 'POST'])
 @login_required
