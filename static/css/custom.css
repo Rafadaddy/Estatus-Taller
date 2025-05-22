@@ -1,63 +1,182 @@
-/* Custom styles for Workshop Management System */
+/* Esquema de colores personalizados para el sistema de gestión de taller */
 
-/* Timeline styles for unit history */
+:root {
+    /* Colores principales */
+    --primary-color: #7B2CBF;      /* Morado principal para encabezados */
+    --secondary-color: #30B700;    /* Verde para acciones positivas */
+    --warning-color: #FFC107;      /* Amarillo para advertencias */
+    --danger-color: #E91E63;       /* Rosa/Rojo para errores y alertas */
+    --info-color: #17A2B8;         /* Azul claro para información */
+    --dark-color: #343A40;         /* Oscuro para fondo */
+    
+    /* Colores para estados */
+    --status-registered: #17A2B8;    /* Azul para registrada */
+    --status-in-workshop: #7B2CBF;   /* Morado para en taller */
+    --status-waiting-parts: #FFC107; /* Amarillo para esperando piezas */
+    --status-completed: #30B700;     /* Verde para completada */
+    --status-received: #5637DD;      /* Morado claro para recibida */
+}
+
+/* Encabezado principal */
+.navbar-dark {
+    background-color: var(--primary-color) !important;
+}
+
+/* Botones personalizados */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    background-color: #5637DD;
+    border-color: #5637DD;
+}
+
+.btn-success {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.btn-success:hover, .btn-success:focus {
+    background-color: #268C00;
+    border-color: #268C00;
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    border-color: var(--danger-color);
+}
+
+.btn-info {
+    background-color: var(--info-color);
+    border-color: var(--info-color);
+}
+
+.btn-warning {
+    background-color: var(--warning-color);
+    border-color: var(--warning-color);
+}
+
+/* Encabezados de tarjetas */
+.card-header.bg-primary {
+    background-color: var(--primary-color) !important;
+}
+
+.card-header.bg-success {
+    background-color: var(--secondary-color) !important;
+}
+
+.card-header.bg-warning {
+    background-color: var(--warning-color) !important;
+}
+
+.card-header.bg-info {
+    background-color: var(--info-color) !important;
+}
+
+.card-header.bg-danger {
+    background-color: var(--danger-color) !important;
+}
+
+/* Estado de unidades */
+.badge.bg-info {
+    background-color: var(--status-registered) !important;
+}
+
+.badge.bg-primary {
+    background-color: var(--status-in-workshop) !important;
+}
+
+.badge.bg-warning {
+    background-color: var(--status-waiting-parts) !important;
+}
+
+.badge.bg-success {
+    background-color: var(--status-completed) !important;
+}
+
+/* Estilo para notificaciones */
+.notification-item.unread {
+    background-color: rgba(123, 44, 191, 0.1);
+    border-left: 3px solid var(--primary-color);
+}
+
+/* Estilos para tablas de datos */
+.datatable thead th {
+    background-color: var(--dark-color);
+    color: white;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(123, 44, 191, 0.05);
+}
+
+/* Línea de tiempo */
+.timeline-badge.bg-info {
+    background-color: var(--status-registered) !important;
+}
+
+.timeline-badge.bg-primary {
+    background-color: var(--status-in-workshop) !important;
+}
+
+.timeline-badge.bg-warning {
+    background-color: var(--status-waiting-parts) !important;
+}
+
+.timeline-badge.bg-success {
+    background-color: var(--status-completed) !important;
+}
+
+/* Estilo de la línea de tiempo */
 .timeline {
     position: relative;
     padding: 20px 0;
-    list-style: none;
-    max-width: 1200px;
-    margin: 0 auto;
 }
 
 .timeline:before {
-    content: " ";
+    content: '';
     position: absolute;
     top: 0;
     bottom: 0;
-    left: 50px;
     width: 3px;
+    background: var(--primary-color);
+    left: 30px;
     margin-left: -1.5px;
-    background-color: #6c757d;
 }
 
 .timeline-item {
-    margin-bottom: 20px;
     position: relative;
+    margin-bottom: 30px;
 }
 
 .timeline-badge {
-    color: #fff;
-    width: 50px;
-    height: 50px;
-    line-height: 50px;
-    font-size: 1.4em;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
     text-align: center;
     position: absolute;
-    top: 16px;
-    left: 50px;
-    margin-left: -25px;
-    border-radius: 50%;
-    z-index: 100;
-}
-
-.timeline-badge i {
-    line-height: 50px;
+    left: 30px;
+    margin-left: -18px;
+    color: #fff;
+    padding-top: 7px;
 }
 
 .timeline-panel {
+    position: relative;
     width: calc(100% - 90px);
     float: right;
     border: 1px solid #d4d4d4;
-    border-radius: 6px;
-    padding: 20px;
-    position: relative;
-    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
-    background-color: #2b3035;
+    border-radius: 4px;
+    padding: 15px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
 }
 
 .timeline-panel:before {
     position: absolute;
-    top: 26px;
+    top: 12px;
     left: -15px;
     display: inline-block;
     border-top: 15px solid transparent;
@@ -69,80 +188,43 @@
 
 .timeline-panel:after {
     position: absolute;
-    top: 27px;
+    top: 13px;
     left: -14px;
     display: inline-block;
     border-top: 14px solid transparent;
-    border-right: 14px solid #2b3035;
-    border-left: 0 solid #2b3035;
+    border-right: 14px solid #fff;
+    border-left: 0 solid #fff;
     border-bottom: 14px solid transparent;
     content: " ";
 }
 
 .timeline-title {
     margin-top: 0;
-    color: inherit;
+    color: var(--primary-color);
 }
 
-.timeline-body > p,
-.timeline-body > ul {
-    margin-bottom: 0;
+/* Botones de exportación */
+.buttons-excel {
+    background-color: var(--secondary-color) !important;
+    color: white !important;
 }
 
-.timeline-body > p + p {
-    margin-top: 5px;
+.buttons-pdf {
+    background-color: var(--danger-color) !important;
+    color: white !important;
 }
 
-/* DataTables customization */
-.dataTables_wrapper .dataTables_length, 
-.dataTables_wrapper .dataTables_filter {
-    margin-bottom: 15px;
+.buttons-print {
+    background-color: var(--primary-color) !important;
+    color: white !important;
 }
 
-/* Custom spacing and padding for card elements */
-.card {
-    margin-bottom: 20px;
-}
-
-/* Status badge styles */
-.badge {
-    padding: 0.5em 0.8em;
-}
-
-/* Custom form styles */
-.form-control:focus, .form-select:focus {
-    border-color: var(--bs-primary);
-    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-}
-
-/* Custom button spacing in forms */
-form .btn {
-    margin-top: 10px;
-}
-
-/* Custom nav styles */
-.navbar {
-    padding: 0.5rem 1rem;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-/* Footer styling */
+/* Footer */
 .footer {
-    margin-top: auto;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: var(--primary-color) !important;
+    color: white !important;
 }
 
-/* Media queries for responsive design */
-@media (max-width: 767.98px) {
-    .timeline-panel {
-        width: calc(100% - 75px);
-    }
-    
-    .timeline:before {
-        left: 40px;
-    }
-    
-    .timeline-badge {
-        left: 40px;
-    }
+.footer .text-muted {
+    color: rgba(255, 255, 255, 0.8) !important;
 }

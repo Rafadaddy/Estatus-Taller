@@ -1,25 +1,53 @@
 <!DOCTYPE html>
-<html lang="es" data-bs-theme="dark">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Sistema de Gestión de Taller{% endblock %}</title>
-    <!-- Bootstrap CSS (Replit theme) -->
-    <link rel="stylesheet" href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <!-- DataTables Buttons CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap5.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
     {% block styles %}{% endblock %}
 </head>
-<body>
+<body class="bg-light">
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
-        <div class="container">
-            <a class="navbar-brand" href="{{ url_for('index') }}">
-                <i class="fas fa-tools me-2"></i>Gestión de Taller
+    <!-- Header principal estilo gráfico -->
+    <header class="py-3" style="background-color: #7B2CBF; color: white;">
+        <div class="container-fluid px-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="h3 mb-0">
+                    <i class="fas fa-tools me-2"></i>Sistema de Gestión de Taller
+                </h1>
+                {% if current_user.is_authenticated %}
+                <div class="d-flex">
+                    <div class="btn-group mx-2">
+                        <a href="{{ url_for('traffic_control_dashboard') }}" class="btn" style="background-color: #30B700; color: white;">
+                            <i class="fas fa-sync-alt me-1"></i>Actualizar
+                        </a>
+                        <a href="{{ url_for('notifications') }}" class="btn" style="background-color: #17A2B8; color: white;">
+                            <i class="fas fa-bell me-1"></i>Notificaciones
+                        </a>
+                        <a href="{{ url_for('unit_history', unit_id=1) }}" class="btn" style="background-color: #E91E63; color: white;">
+                            <i class="fas fa-clipboard-list me-1"></i>Unidades
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <nav class="navbar navbar-expand-lg navbar-dark mb-4" style="background-color: #5637DD;">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand py-2" href="{{ url_for('index') }}">
+                <i class="fas fa-wrench me-2"></i>{{ current_user.department.replace('traffic_control', 'Control de Tráfico').replace('workshop', 'Taller').replace('warehouse', 'Almacén').replace('admin', 'Administrador') }}
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
