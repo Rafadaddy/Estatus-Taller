@@ -176,6 +176,9 @@ def confirm_completion(unit_id):
         db.session.add(status_change)
         db.session.commit()
         
+        # Crear notificaciones para Control de Tráfico
+        Notification.create_for_status_change(unit, old_status, 'completed', current_user)
+        
         flash(f'Unidad {unit.unit_number} ha sido marcada como completada!', 'success')
         return redirect(url_for('traffic_control_dashboard'))
     
@@ -240,7 +243,10 @@ def unit_details(unit_id):
             db.session.add(status_change)
             db.session.commit()
             
-            flash(f'Status for unit {unit.unit_number} has been updated to {unit.get_status_display()}!', 'success')
+            # Crear notificaciones para el cambio de estado
+            Notification.create_for_status_change(unit, old_status, unit.current_status, current_user)
+            
+            flash(f'Estado de la unidad {unit.unit_number} actualizado a {unit.get_status_display()}!', 'success')
             return redirect(url_for('unit_details', unit_id=unit.id))
             
         # Handle part request
@@ -270,7 +276,11 @@ def unit_details(unit_id):
                 db.session.add(status_change)
             
             db.session.commit()
-            flash(f'Part request for {part_form.part_name.data} has been submitted!', 'success')
+            
+            # Crear notificación para solicitud de pieza
+            Notification.create_for_part_request(part_request, current_user)
+            
+            flash(f'Solicitud de pieza para {part_form.part_name.data} ha sido enviada!', 'success')
             return redirect(url_for('unit_details', unit_id=unit.id))
     
     return render_template(

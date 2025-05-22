@@ -2,16 +2,16 @@
 
 :root {
     /* Colores principales */
-    --primary-color: #7B2CBF;      /* Morado principal para encabezados */
-    --secondary-color: #30B700;    /* Verde para acciones positivas */
+    --primary-color: #6c05c7;      /* Morado principal para encabezados */
+    --secondary-color: #278604;    /* Verde para acciones positivas */
     --warning-color: #FFC107;      /* Amarillo para advertencias */
     --danger-color: #E91E63;       /* Rosa/Rojo para errores y alertas */
     --info-color: #17A2B8;         /* Azul claro para información */
-    --dark-color: #4c4757;         /* Oscuro para fondo */
+    --dark-color: #000000;         /* Oscuro para fondo */
 
     /* Colores para estados */
     --status-registered: #17A2B8;    /* Azul para registrada */
-    --status-in-workshop: #7B2CBF;   /* Morado para en taller */
+    --status-in-workshop: #5637DD;   /* Morado para en taller */
     --status-waiting-parts: #FFC107; /* Amarillo para esperando piezas */
     --status-completed: #30B700;     /* Verde para completada */
     --status-received: #5637DD;      /* Morado claro para recibida */
@@ -21,6 +21,25 @@
 .navbar-dark {
     background-color: var(--primary-color) !important;
 }
+
+h1{color: #f4f1f1 }
+h2{color: #000000 }
+p{color: #002afa }
+div{color: #ffffff}
+strong{color: #000000 }
+.col-md-8 {
+    color: #000000
+}
+
+.bg-dark {
+    --bs-bg-opacity: 1;
+    background-color:rgb(255 255 255 / 70%) !important;
+    
+}
+
+.fw-bold {
+    COLOR: #8c0808;}
+    
 
 /* Botones personalizados */
 .btn-primary {
@@ -174,7 +193,7 @@
     border: 1px solid #d4d4d4;
     border-radius: 4px;
     padding: 15px;
-    box-shadow: 0 1px 6px rgb(0, 0, 0, 0.1);
+    box-shadow: 0 1px 6px rgb(255, 255, 255, 0.1);
     background-color: #fff;
     color: #333;
 }
@@ -207,6 +226,7 @@
 .timeline-title {
     margin-top: 0;
     color: var(--primary-color);
+    
 }
 
 /* Botones de exportación */
