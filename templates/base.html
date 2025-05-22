@@ -51,6 +51,12 @@
                         </li>
                         {% endif %}
                         
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('historical_records') }}">
+                                <i class="fas fa-history me-1"></i>Registro Histórico
+                            </a>
+                        </li>
+                        
                         {% if current_user.department == 'admin' %}
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url_for('manage_users') }}">

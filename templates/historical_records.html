@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block title %}Registro Histórico{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2><i class="fas fa-history me-2"></i>Registro Histórico de Unidades</h2>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-search me-2"></i>Búsqueda de Unidades</h5>
+            </div>
+            <div class="card-body">
+                <form method="GET" action="{{ url_for('historical_records') }}">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label for="unit_number" class="form-label">Número de Unidad</label>
+                            <input type="text" class="form-control" id="unit_number" name="unit_number" value="{{ request.args.get('unit_number', '') }}">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="operator_name" class="form-label">Operador</label>
+                            <input type="text" class="form-control" id="operator_name" name="operator_name" value="{{ request.args.get('operator_name', '') }}">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="status" class="form-label">Estado</label>
+                            <select class="form-select" id="status" name="status">
+                                <option value="">Todos los estados</option>
+                                <option value="registered" {% if request.args.get('status') == 'registered' %}selected{% endif %}>Registrada</option>
+                                <option value="in_workshop" {% if request.args.get('status') == 'in_workshop' %}selected{% endif %}>En Taller</option>
+                                <option value="waiting_parts" {% if request.args.get('status') == 'waiting_parts' %}selected{% endif %}>Esperando Repuestos</option>
+                                <option value="completed" {% if request.args.get('status') == 'completed' %}selected{% endif %}>Completada</option>
+                                <option value="received" {% if request.args.get('status') == 'received' %}selected{% endif %}>Recibida por Control</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="date_range" class="form-label">Rango de Fechas</label>
+                            <select class="form-select" id="date_range" name="date_range">
+                                <option value="">Cualquier fecha</option>
+                                <option value="today" {% if request.args.get('date_range') == 'today' %}selected{% endif %}>Hoy</option>
+                                <option value="week" {% if request.args.get('date_range') == 'week' %}selected{% endif %}>Esta semana</option>
+                                <option value="month" {% if request.args.get('date_range') == 'month' %}selected{% endif %}>Este mes</option>
+                                <option value="year" {% if request.args.get('date_range') == 'year' %}selected{% endif %}>Este año</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12 text-end">
+                            <button type="reset" class="btn btn-secondary">
+                                <i class="fas fa-undo me-1"></i>Limpiar
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-search me-1"></i>Buscar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-clipboard-list me-2"></i>Resultados ({{ units|length }} unidades encontradas)</h5>
+            </div>
+            <div class="card-body">
+                {% if units %}
+                <div class="table-responsive">
+                    <table class="table table-hover datatable">
+                        <thead>
+                            <tr>
+                                <th>Número de Unidad</th>
+                                <th>Operador</th>
+                                <th>Estado</th>
+                                <th>Registrada El</th>
+                                <th>Última Actualización</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for unit in units %}
+                            <tr>
+                                <td>{{ unit.unit_number }}</td>
+                                <td>{{ unit.operator_name }}</td>
+                                <td>
+                                    <span class="badge 
+                                        {% if unit.current_status == 'registered' %}bg-info
+                                        {% elif unit.current_status == 'in_workshop' %}bg-primary
+                                        {% elif unit.current_status == 'waiting_parts' %}bg-warning
+                                        {% elif unit.current_status == 'completed' %}bg-success
+                                        {% elif unit.current_status == 'received' %}bg-success
+                                        {% endif %}">
+                                        {{ unit.get_status_display() }}
+                                    </span>
+                                </td>
+                                <td>{{ unit.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                <td>
+                                    {% if unit.status_changes %}
+                                        {{ unit.status_changes[-1].created_at.strftime('%Y-%m-%d %H:%M') }}
+                                    {% else %}
+                                        {{ unit.created_at.strftime('%Y-%m-%d %H:%M') }}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{{ url_for('unit_history', unit_id=unit.id) }}" class="btn btn-sm btn-info">
+                                        <i class="fas fa-history me-1"></i>Historial
+                                    </a>
+                                    {% if current_user.department == 'workshop' and unit.current_status in ['registered', 'in_workshop', 'waiting_parts'] %}
+                                    <a href="{{ url_for('unit_details', unit_id=unit.id) }}" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-wrench me-1"></i>Gestionar
+                                    </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>No se encontraron registros que coincidan con los criterios de búsqueda.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize DataTables with export options
+        $('.datatable').DataTable({
+            responsive: true,
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
+            order: [[3, 'desc']],
+            language: {
+                search: "Filtrar registros:",
+                lengthMenu: "Mostrar _MENU_ unidades por página",
+                zeroRecords: "No se encontraron unidades coincidentes",
+                info: "Mostrando _START_ a _END_ de _TOTAL_ unidades",
+                infoEmpty: "No hay unidades disponibles",
+                infoFiltered: "(filtrado de _MAX_ unidades totales)"
+            }
+        });
+    });
+</script>
+{% endblock %}

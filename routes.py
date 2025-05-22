@@ -1,8 +1,9 @@
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import render_template, redirect, url_for, flash, request, abort
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import check_password_hash, generate_password_hash
+from sqlalchemy import func
 
 from app import app, db
 from models import User, Unit, StatusChange, PartRequest
@@ -361,6 +362,49 @@ def unit_history(unit_id):
         status_changes=status_changes,
         part_requests=part_requests
     )
+
+# Historical records route (search and view all units)
+@app.route('/historical_records')
+@login_required
+def historical_records():
+    # Get search parameters from query string
+    unit_number = request.args.get('unit_number', '')
+    operator_name = request.args.get('operator_name', '')
+    status = request.args.get('status', '')
+    date_range = request.args.get('date_range', '')
+    
+    # Build query
+    query = Unit.query
+    
+    # Apply filters if provided
+    if unit_number:
+        query = query.filter(Unit.unit_number.ilike(f'%{unit_number}%'))
+    
+    if operator_name:
+        query = query.filter(Unit.operator_name.ilike(f'%{operator_name}%'))
+    
+    if status:
+        query = query.filter(Unit.current_status == status)
+    
+    # Apply date filter
+    if date_range:
+        today = datetime.now().date()
+        if date_range == 'today':
+            query = query.filter(func.date(Unit.created_at) == today)
+        elif date_range == 'week':
+            start_of_week = today - timedelta(days=today.weekday())
+            query = query.filter(func.date(Unit.created_at) >= start_of_week)
+        elif date_range == 'month':
+            start_of_month = today.replace(day=1)
+            query = query.filter(func.date(Unit.created_at) >= start_of_month)
+        elif date_range == 'year':
+            start_of_year = today.replace(month=1, day=1)
+            query = query.filter(func.date(Unit.created_at) >= start_of_year)
+    
+    # Get results
+    units = query.order_by(Unit.created_at.desc()).all()
+    
+    return render_template('historical_records.html', units=units)
 
 # Admin routes
 @app.route('/admin/users', methods=['GET', 'POST'])
