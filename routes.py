@@ -1,12 +1,12 @@
 import logging
 from datetime import datetime, timedelta
-from flask import render_template, redirect, url_for, flash, request, abort
+from flask import render_template, redirect, url_for, flash, request, abort, jsonify
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import check_password_hash, generate_password_hash
 from sqlalchemy import func
 
 from app import app, db
-from models import User, Unit, StatusChange, PartRequest
+from models import User, Unit, StatusChange, PartRequest, Notification
 from forms import (
     LoginForm, RegisterUnitForm, UpdateStatusForm, 
     PartRequestForm, UpdatePartRequestForm, UserForm
@@ -104,6 +104,10 @@ def register_unit():
         db.session.add(status_change)
         
         db.session.commit()
+        
+        # Crear notificaciones para informar al taller sobre la nueva unidad
+        Notification.create_for_unit_register(unit, current_user)
+        
         flash(f'Unit {unit.unit_number} has been registered successfully!', 'success')
         return redirect(url_for('traffic_control_dashboard'))
     
@@ -139,6 +143,9 @@ def confirm_completion(unit_id):
             )
             db.session.add(status_change)
             db.session.commit()
+            
+            # Crear notificaciones para el taller
+            Notification.create_for_status_change(unit, old_status, 'received', current_user)
             
             flash(f'Unidad {unit.unit_number} ha sido marcada como recibida por Control de Tráfico.', 'success')
             return redirect(url_for('traffic_control_dashboard'))
