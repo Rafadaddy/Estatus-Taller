@@ -8,10 +8,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Meta para ajustar la impresión a media carta -->
+    <style media="print">
+        @page { size: 5.5in 8.5in; margin: 0; }
+    </style>
     
     <style>
         @page {
-            size: 5.5in 8.5in; /* Tamaño de media carta (formato carta de EE. UU. dividido por la mitad) */
+            size: 5.5in 8.5in portrait; /* Tamaño de media carta en orientación vertical */
             margin: 0.5cm;
         }
         body {
@@ -28,6 +32,16 @@
             margin: 0 auto;
             padding: 10px;
             box-sizing: border-box;
+            height: 8.5in;
+        }
+        
+        /* Esto asegura que solo el reporte se imprima en tamaño media carta */
+        @media print {
+            html, body {
+                width: 5.5in;
+                height: 8.5in;
+                overflow: hidden;
+            }
         }
         .report-header {
             text-align: center;
@@ -104,19 +118,25 @@
                 padding: 0;
             }
             .report-container {
-                width: 100%;
+                width: 5.5in;
+                height: 8.5in;
                 max-width: none;
+                overflow: hidden;
+                padding: 0.25in;
+            }
+            .repair-line {
+                height: 22px;
             }
         }
     </style>
 </head>
 <body>
     <div class="report-container">
-        <div class="no-print text-end mb-3">
-            <button onclick="window.print()" class="btn btn-sm btn-primary">
-                <i class="fas fa-print me-1"></i> Imprimir Reporte
+        <div class="no-print mb-3 d-flex justify-content-center">
+            <button onclick="window.print()" class="btn btn-lg btn-primary" style="font-size: 18px; padding: 10px 20px;">
+                <i class="fas fa-print me-2"></i> IMPRIMIR REPORTE
             </button>
-            <a href="{{ url_for('traffic_control_dashboard') }}" class="btn btn-sm btn-secondary ms-2">
+            <a href="{{ url_for('traffic_control_dashboard') }}" class="btn btn-lg btn-secondary ms-3">
                 <i class="fas fa-arrow-left me-1"></i> Volver al Panel
             </a>
         </div>
