@@ -25,10 +25,11 @@ class UpdateStatusForm(FlaskForm):
         ('registered', 'Registrada'),
         ('in_workshop', 'En Taller'),
         ('waiting_parts', 'Esperando Repuestos'),
-        ('completed', 'Completada')
+        ('completed', 'Completada'),
+        ('received', 'Recibida por Control')
     ], validators=[DataRequired()])
     notes = TextAreaField('Notas', validators=[Length(max=500)])
-    submit = SubmitField('Actualizar Estado')
+    submit = SubmitField('Confirmar Recepción')
 
 class PartRequestForm(FlaskForm):
     unit_id = HiddenField('ID de Unidad', validators=[DataRequired()])
