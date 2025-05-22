@@ -7,7 +7,9 @@
     --warning-color: #FFC107;      /* Amarillo para advertencias */
     --danger-color: #E91E63;       /* Rosa/Rojo para errores y alertas */
     --info-color: #17A2B8;         /* Azul claro para información */
-    --dark-color: #4c4757;         /* Oscuro para fondo */
+    --dark-color: #4c4757;         /* Oscuro para elementos específicos */
+    --light-color: #FFFFFF;        /* Blanco para fondo principal */
+    --text-color: #333333;         /* Negro para texto principal */
 
     /* Colores para estados */
     --status-registered: #17A2B8;    /* Azul para registrada */
@@ -15,6 +17,13 @@
     --status-waiting-parts: #FFC107; /* Amarillo para esperando piezas */
     --status-completed: #30B700;     /* Verde para completada */
     --status-received: #5637DD;      /* Morado claro para recibida */
+    
+    /* Definición de estilos para fondo claro */
+    --bs-body-bg: #FFFFFF;
+    --bs-body-color: #333333;
+    --bs-card-bg: #FFFFFF;
+    --bs-table-bg: #FFFFFF;
+    --bs-table-color: #333333;
 }
 
 /* Encabezado principal */
@@ -109,7 +118,7 @@
 }
 
 .datatable {
-    color: #333;
+    color: #000000;
 }
 
 .table-hover tbody tr:hover {

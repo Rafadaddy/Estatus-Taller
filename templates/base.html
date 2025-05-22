@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Sistema de Gestión de Taller{% endblock %}</title>
-    <!-- Bootstrap CSS -->
+    <!-- Bootstrap CSS con tema claro -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -15,8 +15,34 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
     {% block styles %}{% endblock %}
+    <style>
+        /* Estilos para forzar tema claro */
+        body, html {
+            background-color: white !important;
+            color: #333 !important;
+        }
+        .container, .container-fluid, .row {
+            background-color: white !important;
+        }
+        .card {
+            background-color: white !important;
+            color: #333 !important;
+        }
+        .table, .table-striped, .datatable {
+            background-color: white !important;
+            color: #333 !important;
+        }
+        .card-body, .modal-body {
+            background-color: white !important;
+            color: #333 !important;
+        }
+        /* Solo mantener color en elementos específicos */
+        .navbar, .card-header, .btn {
+            /* Estos mantienen sus colores originales */
+        }
+    </style>
 </head>
-<body style="background-color: white;">
+<body style="background-color: white !important;">
     <!-- Navigation -->
     <!-- Header principal estilo gráfico -->
     <header class="py-3" style="background-color: #7B2CBF; color: white;">
@@ -47,7 +73,12 @@
     <nav class="navbar navbar-expand-lg navbar-dark mb-4" style="background-color: #5637DD;">
         <div class="container-fluid px-4">
             <a class="navbar-brand py-2" href="{{ url_for('index') }}">
-                <i class="fas fa-wrench me-2"></i>{{ current_user.department.replace('traffic_control', 'Control de Tráfico').replace('workshop', 'Taller').replace('warehouse', 'Almacén').replace('admin', 'Administrador') }}
+                <i class="fas fa-wrench me-2"></i>
+                {% if current_user.is_authenticated %}
+                    {{ current_user.department.replace('traffic_control', 'Control de Tráfico').replace('workshop', 'Taller').replace('warehouse', 'Almacén').replace('admin', 'Administrador') }}
+                {% else %}
+                    Inicio
+                {% endif %}
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
