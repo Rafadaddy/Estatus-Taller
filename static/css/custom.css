@@ -1,4 +1,4 @@
-/* Esquema de colores personalizados para el sistema de gestión de taller */
+   /* Esquema de colores personalizados para el sistema de gestión de taller */
 
 :root {
     /* Colores principales */
@@ -7,8 +7,8 @@
     --warning-color: #FFC107;      /* Amarillo para advertencias */
     --danger-color: #E91E63;       /* Rosa/Rojo para errores y alertas */
     --info-color: #17A2B8;         /* Azul claro para información */
-    --dark-color: #343A40;         /* Oscuro para fondo */
-    
+    --dark-color: #4c4757;         /* Oscuro para fondo */
+
     /* Colores para estados */
     --status-registered: #17A2B8;    /* Azul para registrada */
     --status-in-workshop: #7B2CBF;   /* Morado para en taller */
@@ -104,8 +104,12 @@
 
 /* Estilos para tablas de datos */
 .datatable thead th {
-    background-color: var(--dark-color);
+    background-color: var(--primary-color);
     color: white;
+}
+
+.datatable {
+    color: #333;
 }
 
 .table-hover tbody tr:hover {
@@ -170,12 +174,14 @@
     border: 1px solid #d4d4d4;
     border-radius: 4px;
     padding: 15px;
-    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 6px rgb(0, 0, 0, 0.1);
     background-color: #fff;
+    color: #333;
 }
 
 .timeline-panel:before {
     position: absolute;
+
     top: 12px;
     left: -15px;
     display: inline-block;
