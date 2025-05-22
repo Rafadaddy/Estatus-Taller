@@ -5,7 +5,7 @@ body, html,
 .container, .container-fluid,
 .card, .table, .modal,
 .bg-light, .bg-dark, .bg-secondary {
-    background-color: #FFFFFF !important;
+    background-color: #ffffff !important;
     color: #333333 !important;
 }
 
@@ -19,7 +19,7 @@ body, html,
 /* Mantener colores de encabezados */
 .card-header.bg-primary {
     background-color: #7B2CBF !important;
-    color: white !important;
+    color: #ffffff !important;
 }
 
 /* Asegurar que los botones mantienen sus colores */
@@ -49,7 +49,7 @@ body, html,
 [data-bs-theme="dark"] {
     --bs-body-bg: #FFFFFF !important;
     --bs-body-color: #333333 !important;
-    --bs-secondary-bg: #FFFFFF !important;
+    --bs-secondary-bg: #ffffff !important;
     --bs-card-bg: #FFFFFF !important;
     --bs-card-color: #333333 !important;
 }
@@ -61,7 +61,7 @@ p, h1, h2, h3, h4, h5, h6, .form-label, .col-form-label {
 
 /* Contenedores */
 .bg-light, .bg-dark, .bg-secondary {
-    background-color: #FFFFFF !important;
+    background-color: #fafafa !important;
 }
 
 /* Corregir footer si existe */

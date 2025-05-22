@@ -8,8 +8,8 @@
     --danger-color: #E91E63;       /* Rosa/Rojo para errores y alertas */
     --info-color: #17A2B8;         /* Azul claro para información */
     --dark-color: #4c4757;         /* Oscuro para elementos específicos */
-    --light-color: #FFFFFF;        /* Blanco para fondo principal */
-    --text-color: #333333;         /* Negro para texto principal */
+    --light-color: #ffffff;        /* Blanco para fondo principal */
+    --text-color: #000000;         /* Negro para texto principal */
 
     /* Colores para estados */
     --status-registered: #17A2B8;    /* Azul para registrada */
@@ -184,7 +184,7 @@
     border-radius: 4px;
     padding: 15px;
     box-shadow: 0 1px 6px rgb(0, 0, 0, 0.1);
-    background-color: #fff;
+    background-color: #fffafa;
     color: #333;
 }
 
