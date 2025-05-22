@@ -4,6 +4,13 @@
 
 {% block styles %}
 <style>
+    /* Aquí puedes cambiar las medidas del reporte */
+    :root {
+        --report-width: 5.5in;   /* ANCHO: Modifica este valor según necesites */
+        --report-height: 8.5in;  /* ALTO: Modifica este valor según necesites */
+        --report-padding: 0.25in; /* MARGEN INTERIOR: Modifica según necesites */
+    }
+    
     @media print {
         body * {
             visibility: hidden;
@@ -15,19 +22,19 @@
             position: absolute;
             left: 0;
             top: 0;
-            width: 5.5in;
-            height: 8.5in;
+            width: var(--report-width);
+            height: var(--report-height);
         }
         @page {
-            size: 5.5in 8.5in portrait;
+            size: var(--report-width) var(--report-height) portrait;
             margin: 0;
         }
     }
     
     .report-container {
-        width: 5.5in;
-        height: 8.5in;
-        padding: 0.25in;
+        width: var(--report-width);
+        height: var(--report-height);
+        padding: var(--report-padding);
         margin: 0 auto;
         border: 1px solid #ddd;
         box-sizing: border-box;
