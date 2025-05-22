@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+
+{% block title %}Notificaciones{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h2><i class="fas fa-bell me-2"></i>Notificaciones</h2>
+    </div>
+    <div class="col-md-4 text-end">
+        <button id="mark-all-read" class="btn btn-primary">
+            <i class="fas fa-check-double me-1"></i>Marcar todas como leídas
+        </button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-bell me-2"></i>Tus Notificaciones</h5>
+            </div>
+            <div class="card-body">
+                {% if notifications %}
+                <div class="list-group notification-list">
+                    {% for notification in notifications %}
+                    <a href="{{ notification.get_url() }}" class="list-group-item list-group-item-action notification-item {% if not notification.is_read %}unread{% endif %}" data-id="{{ notification.id }}">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">
+                                {% if notification.type == 'status_change' %}
+                                <i class="fas fa-exchange-alt me-2 text-primary"></i>
+                                {% elif notification.type == 'unit_register' %}
+                                <i class="fas fa-clipboard-list me-2 text-success"></i>
+                                {% elif notification.type == 'part_request' %}
+                                <i class="fas fa-tools me-2 text-warning"></i>
+                                {% else %}
+                                <i class="fas fa-info-circle me-2 text-info"></i>
+                                {% endif %}
+                                {{ notification.message }}
+                            </h5>
+                            <small class="text-muted">{{ notification.created_at.strftime('%d-%m-%Y %H:%M') }}</small>
+                        </div>
+                        {% if not notification.is_read %}
+                        <span class="badge bg-primary float-end">Nueva</span>
+                        {% endif %}
+                    </a>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>No tienes notificaciones.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Marcar notificación como leída al hacer clic
+        document.querySelectorAll('.notification-item.unread').forEach(function(item) {
+            item.addEventListener('click', function(e) {
+                const notificationId = this.dataset.id;
+                
+                fetch('/notifications/mark_read/' + notificationId, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Quitar clase unread y badge
+                        this.classList.remove('unread');
+                        const badge = this.querySelector('.badge');
+                        if (badge) badge.remove();
+                        
+                        // Actualizar contador en la barra de navegación
+                        updateNotificationCount();
+                    }
+                });
+            });
+        });
+        
+        // Marcar todas como leídas
+        document.getElementById('mark-all-read').addEventListener('click', function() {
+            fetch('/notifications/mark_all_read', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Quitar clase unread y badge de todas las notificaciones
+                    document.querySelectorAll('.notification-item.unread').forEach(function(item) {
+                        item.classList.remove('unread');
+                        const badge = item.querySelector('.badge');
+                        if (badge) badge.remove();
+                    });
+                    
+                    // Actualizar contador en la barra de navegación
+                    updateNotificationCount();
+                }
+            });
+        });
+        
+        function updateNotificationCount() {
+            fetch('/notifications/unread')
+            .then(response => response.json())
+            .then(data => {
+                const counterElement = document.getElementById('notification-count');
+                if (counterElement) {
+                    if (data.count > 0) {
+                        counterElement.textContent = data.count;
+                        counterElement.style.display = 'inline-block';
+                    } else {
+                        counterElement.style.display = 'none';
+                    }
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}
+
+{% block styles %}
+<style>
+    .notification-list {
+        max-height: 600px;
+        overflow-y: auto;
+    }
+    
+    .notification-item.unread {
+        background-color: rgba(13, 110, 253, 0.1);
+        font-weight: 600;
+    }
+    
+    .notification-item:hover {
+        background-color: rgba(13, 110, 253, 0.15);
+    }
+</style>
+{% endblock %}

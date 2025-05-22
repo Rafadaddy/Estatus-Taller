@@ -443,6 +443,45 @@ def manage_users():
     users = User.query.all()
     return render_template('admin/users.html', users=users, form=form)
 
+# Notification routes
+@app.route('/notifications')
+@login_required
+def notifications():
+    # Obtener todas las notificaciones del usuario, ordenadas por fecha (más recientes primero)
+    notifications = Notification.query.filter_by(user_id=current_user.id).order_by(Notification.created_at.desc()).all()
+    return render_template('notifications.html', notifications=notifications)
+
+@app.route('/notifications/unread')
+@login_required
+def unread_notifications():
+    # Obtener número de notificaciones no leídas
+    unread_count = Notification.query.filter_by(user_id=current_user.id, is_read=False).count()
+    return jsonify({'count': unread_count})
+
+@app.route('/notifications/mark_read/<int:notification_id>', methods=['POST'])
+@login_required
+def mark_notification_read(notification_id):
+    notification = Notification.query.get_or_404(notification_id)
+    
+    # Verificar que la notificación pertenezca al usuario actual
+    if notification.user_id != current_user.id:
+        return jsonify({'success': False, 'message': 'No autorizado'}), 403
+    
+    notification.is_read = True
+    db.session.commit()
+    return jsonify({'success': True})
+
+@app.route('/notifications/mark_all_read', methods=['POST'])
+@login_required
+def mark_all_notifications_read():
+    # Marcar todas las notificaciones del usuario como leídas
+    notifications = Notification.query.filter_by(user_id=current_user.id, is_read=False).all()
+    for notification in notifications:
+        notification.is_read = True
+    
+    db.session.commit()
+    return jsonify({'success': True})
+
 # Error handlers
 @app.errorhandler(404)
 def page_not_found(e):

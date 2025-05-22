@@ -68,6 +68,33 @@
                 </ul>
                 <ul class="navbar-nav">
                     {% if current_user.is_authenticated %}
+                    <!-- Notificaciones -->
+                    <li class="nav-item dropdown me-2">
+                        <a class="nav-link position-relative" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-bell"></i>
+                            <span id="notification-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display: none;">
+                                0
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end notification-dropdown" aria-labelledby="notificationDropdown" style="width: 350px; max-height: 400px; overflow-y: auto;">
+                            <li>
+                                <div class="d-flex justify-content-between align-items-center px-3 py-2">
+                                    <span><i class="fas fa-bell me-1"></i><strong>Notificaciones</strong></span>
+                                    <a href="{{ url_for('notifications') }}" class="btn btn-sm btn-link p-0">Ver todas</a>
+                                </div>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <div id="notification-list">
+                                <li class="text-center py-3">
+                                    <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                        <span class="visually-hidden">Cargando...</span>
+                                    </div>
+                                </li>
+                            </div>
+                        </ul>
+                    </li>
+                    
+                    <!-- Usuario -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
                             <i class="fas fa-user me-1"></i>{{ current_user.username }}
@@ -79,6 +106,11 @@
                                 </span>
                             </li>
                             <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('notifications') }}">
+                                    <i class="fas fa-bell me-1"></i>Mis Notificaciones
+                                </a>
+                            </li>
                             <li>
                                 <a class="dropdown-item" href="{{ url_for('logout') }}">
                                     <i class="fas fa-sign-out-alt me-1"></i>Cerrar Sesión
@@ -139,6 +171,97 @@
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.bootstrap5.min.js"></script>
     
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    
+    <!-- Notificaciones en tiempo real -->
+    {% if current_user.is_authenticated %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Función para obtener notificaciones no leídas
+            function updateNotificationCount() {
+                fetch('/notifications/unread')
+                .then(response => response.json())
+                .then(data => {
+                    const counterElement = document.getElementById('notification-count');
+                    if (counterElement) {
+                        if (data.count > 0) {
+                            counterElement.textContent = data.count;
+                            counterElement.style.display = 'inline-block';
+                        } else {
+                            counterElement.style.display = 'none';
+                        }
+                    }
+                });
+            }
+            
+            // Cargar las notificaciones recientes cuando se abre el desplegable
+            const notificationDropdown = document.getElementById('notificationDropdown');
+            if (notificationDropdown) {
+                notificationDropdown.addEventListener('show.bs.dropdown', function() {
+                    const notificationList = document.getElementById('notification-list');
+                    
+                    // Obtener las 5 notificaciones más recientes
+                    fetch('/notifications')
+                    .then(response => response.text())
+                    .then(html => {
+                        // Crear un DOM temporal para analizar el HTML
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        
+                        // Obtener las primeras 5 notificaciones de la lista
+                        const notifications = doc.querySelectorAll('.notification-item');
+                        let notificationsHtml = '';
+                        
+                        if (notifications.length > 0) {
+                            for (let i = 0; i < Math.min(5, notifications.length); i++) {
+                                const notification = notifications[i];
+                                notificationsHtml += `<li><a class="dropdown-item notification-item ${notification.classList.contains('unread') ? 'fw-bold' : ''}" href="${notification.getAttribute('href')}" data-id="${notification.dataset.id}">
+                                    ${notification.querySelector('h5').innerHTML}
+                                    <div class="text-muted small">${notification.querySelector('small').textContent}</div>
+                                </a></li>`;
+                            }
+                            
+                            // Añadir enlace para ver todas las notificaciones
+                            notificationsHtml += `<li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-center" href="/notifications">Ver todas las notificaciones</a></li>`;
+                        } else {
+                            notificationsHtml = `<li><span class="dropdown-item text-center">No tienes notificaciones</span></li>`;
+                        }
+                        
+                        notificationList.innerHTML = notificationsHtml;
+                        
+                        // Añadir listeners para marcar como leídas
+                        document.querySelectorAll('.notification-item.fw-bold').forEach(function(item) {
+                            item.addEventListener('click', function() {
+                                const notificationId = this.dataset.id;
+                                
+                                fetch('/notifications/mark_read/' + notificationId, {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    }
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        // Actualizar contador
+                                        updateNotificationCount();
+                                    }
+                                });
+                            });
+                        });
+                    });
+                });
+            }
+            
+            // Verificar notificaciones no leídas al cargar la página
+            updateNotificationCount();
+            
+            // Verificar notificaciones cada 30 segundos
+            setInterval(updateNotificationCount, 30000);
+        });
+    </script>
+    {% endif %}
+    
     {% block scripts %}{% endblock %}
 </body>
 </html>
