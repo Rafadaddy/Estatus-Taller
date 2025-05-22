@@ -102,8 +102,9 @@
                                 </td>
                                 <td>{{ unit.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
                                 <td>
-                                    {% if unit.status_changes %}
-                                        {{ unit.status_changes[-1].created_at.strftime('%Y-%m-%d %H:%M') }}
+                                    <!-- Mostramos la última fecha de actualización -->
+                                    {% if unit.latest_status_change %}
+                                        {{ unit.latest_status_change.created_at.strftime('%Y-%m-%d %H:%M') }}
                                     {% else %}
                                         {{ unit.created_at.strftime('%Y-%m-%d %H:%M') }}
                                     {% endif %}

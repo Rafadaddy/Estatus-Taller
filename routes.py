@@ -404,6 +404,11 @@ def historical_records():
     # Get results
     units = query.order_by(Unit.created_at.desc()).all()
     
+    # Para cada unidad, obtener su último cambio de estado
+    for unit in units:
+        latest_status_change = StatusChange.query.filter_by(unit_id=unit.id).order_by(StatusChange.created_at.desc()).first()
+        unit.latest_status_change = latest_status_change
+    
     return render_template('historical_records.html', units=units)
 
 # Admin routes
