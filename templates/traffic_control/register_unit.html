@@ -2,6 +2,46 @@
 
 {% block title %}Registrar Nueva Unidad{% endblock %}
 
+{% block styles %}
+<style>
+    @media print {
+        body * {
+            visibility: hidden;
+        }
+        #reportToPrint, #reportToPrint * {
+            visibility: visible;
+        }
+        #reportToPrint {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 5.5in;
+            height: 8.5in;
+        }
+        @page {
+            size: 5.5in 8.5in portrait;
+            margin: 0;
+        }
+    }
+    
+    .report-container {
+        width: 5.5in;
+        height: 8.5in;
+        padding: 0.25in;
+        margin: 0 auto;
+        border: 1px solid #ddd;
+        box-sizing: border-box;
+        background-color: white;
+    }
+    
+    .repair-line {
+        border-bottom: 1px solid #ddd;
+        height: 25px;
+        margin-bottom: 5px;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -60,11 +100,123 @@
                         <a href="{{ url_for('traffic_control_dashboard') }}" class="btn btn-secondary">
                             <i class="fas fa-arrow-left me-1"></i>Volver
                         </a>
-                        {{ form.submit(class="btn btn-success") }}
+                        <div>
+                            <button type="button" id="printPreviewBtn" class="btn btn-info me-2">
+                                <i class="fas fa-print me-1"></i>Vista Previa e Imprimir
+                            </button>
+                            {{ form.submit(class="btn btn-success") }}
+                        </div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Reporte para impresión (oculto inicialmente) -->
+<div id="reportToPrint" style="display: none;">
+    <div class="report-container">
+        <div style="text-align: center; border-bottom: 2px solid #7B2CBF; padding-bottom: 10px; margin-bottom: 15px;">
+            <div style="font-size: 16px; font-weight: bold; margin: 5px 0; color: #410476;">SISTEMA DE GESTIÓN DE TALLER</div>
+            <div style="font-size: 14px; margin: 5px 0;">REPORTE DE UNIDAD PARA REPARACIÓN</div>
+            <div>Fecha: <span id="reportDate"></span></div>
+        </div>
+        
+        <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 15px; background-color: #f9f9f9;">
+            <div style="display: flex; margin-bottom: 5px;">
+                <div style="font-weight: bold; width: 120px;">Número de Unidad:</div>
+                <div id="reportUnitNumber"></div>
+            </div>
+            <div style="display: flex; margin-bottom: 5px;">
+                <div style="font-weight: bold; width: 120px;">Operador:</div>
+                <div id="reportOperator"></div>
+            </div>
+            <div style="display: flex; margin-bottom: 5px;">
+                <div style="font-weight: bold; width: 120px;">Registrado por:</div>
+                <div>{{ current_user.username }}</div>
+            </div>
+        </div>
+        
+        <div style="margin-bottom: 15px;">
+            <div style="font-weight: bold; margin-bottom: 5px; border-bottom: 1px solid #ccc; padding-bottom: 3px; color: #7B2CBF;">DESCRIPCIÓN DEL PROBLEMA</div>
+            <div id="reportDescription" style="border: 1px solid #ddd; padding: 5px; min-height: 50px; background-color: #f9f9f9;"></div>
+        </div>
+        
+        <div style="margin-bottom: 15px;">
+            <div style="font-weight: bold; margin-bottom: 5px; border-bottom: 1px solid #ccc; padding-bottom: 3px; color: #7B2CBF;">DIAGNÓSTICO Y REPARACIÓN REALIZADA</div>
+            <div class="repair-line"></div>
+            <div class="repair-line"></div>
+            <div class="repair-line"></div>
+            <div class="repair-line"></div>
+            <div class="repair-line"></div>
+            <div class="repair-line"></div>
+        </div>
+        
+        <div style="margin-bottom: 15px;">
+            <div style="font-weight: bold; margin-bottom: 5px; border-bottom: 1px solid #ccc; padding-bottom: 3px; color: #7B2CBF;">PIEZAS UTILIZADAS</div>
+            <div class="repair-line"></div>
+            <div class="repair-line"></div>
+            <div class="repair-line"></div>
+        </div>
+        
+        <div style="margin-top: 20px; display: flex; justify-content: space-between;">
+            <div style="border-top: 1px solid #000; width: 45%; text-align: center; padding-top: 5px;">
+                <small>Firma del Mecánico</small>
+            </div>
+            <div style="border-top: 1px solid #000; width: 45%; text-align: center; padding-top: 5px;">
+                <small>Firma de Recepción (Control de Tráfico)</small>
+            </div>
+        </div>
+        
+        <div style="margin-top: 20px; border-top: 1px solid #ccc; padding-top: 10px; text-align: center; font-size: 10px;">
+            <div>SISTEMA DE GESTIÓN DE TALLER - DOCUMENTO INTERNO</div>
+            <div>Fecha de impresión: <span id="printDate"></span></div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('printPreviewBtn').addEventListener('click', showPrintPreview);
+});
+
+function showPrintPreview() {
+    // Obtener los valores del formulario
+    const unitNumber = document.getElementById('unit_number').value;
+    const operator = document.getElementById('operator_name').value;
+    const description = document.getElementById('description').value;
+    
+    if (!unitNumber || !operator || !description) {
+        alert('Por favor complete todos los campos del formulario antes de imprimir el reporte.');
+        return;
+    }
+    
+    // Llenar los datos del reporte
+    document.getElementById('reportUnitNumber').textContent = unitNumber;
+    document.getElementById('reportOperator').textContent = operator;
+    document.getElementById('reportDescription').textContent = description;
+    
+    // Establecer fechas
+    const now = new Date();
+    const dateFormatted = now.toLocaleDateString('es-MX');
+    const dateTimeFormatted = now.toLocaleDateString('es-MX') + ' ' + now.toLocaleTimeString('es-MX');
+    
+    document.getElementById('reportDate').textContent = dateFormatted;
+    document.getElementById('printDate').textContent = dateTimeFormatted;
+    
+    // Mostrar el reporte
+    document.getElementById('reportToPrint').style.display = 'block';
+    
+    // Imprimir
+    window.print();
+    
+    // Ocultar el reporte después de imprimir
+    setTimeout(function() {
+        document.getElementById('reportToPrint').style.display = 'none';
+    }, 1000);
+}
+</script>
 {% endblock %}
