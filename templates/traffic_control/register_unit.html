@@ -4,11 +4,11 @@
 
 {% block styles %}
 <style>
-    /* Estilo de impresión directo */
+    /* Estilos para impresión en media carta horizontal */
     @media print {
         @page {
             size: 8.5in 5.5in landscape; /* Media carta horizontal */
-            margin: 0;
+            margin: 0.5in;
         }
         
         body * {
@@ -23,9 +23,8 @@
             position: absolute;
             left: 0;
             top: 0;
-            width: 8.5in;
-            height: 5.5in;
-            padding: 0.5in;
+            width: 7.5in;
+            height: 4.5in;
             box-sizing: border-box;
             background-color: white;
             font-size: 12pt;
@@ -41,14 +40,14 @@
     
     /* Estilos para la vista previa en pantalla */
     .report-container {
-        width: 8.5in;
-        height: 5.5in;
-        padding: 0.5in;
+        width: 100%;
+        max-width: 850px; /* Equivalente a aprox. 8.5in */
+        height: 550px; /* Equivalente a aprox. 5.5in */
+        padding: 50px;
         margin: 0 auto;
         border: 1px solid #ddd;
         box-sizing: border-box;
         background-color: white;
-        max-width: 100%;
         font-size: 12pt;
     }
     
@@ -137,7 +136,10 @@
         <div style="text-align: center; border-bottom: 2px solid #7B2CBF; padding-bottom: 10px; margin-bottom: 15px;">
             <div style="font-size: 16px; font-weight: bold; margin: 5px 0; color: #410476;">SISTEMA DE GESTIÓN DE TALLER</div>
             <div style="font-size: 14px; margin: 5px 0;">REPORTE DE UNIDAD PARA REPARACIÓN</div>
-            <div>Fecha: <span id="reportDate"></span></div>
+            <div style="display: flex; justify-content: space-between; margin-top: 5px;">
+                <div>Fecha: <span id="reportDate"></span></div>
+                <div>No. Reporte: <span id="reportNumber"></span></div>
+            </div>
         </div>
         
         <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 15px; background-color: #f9f9f9;">
@@ -217,37 +219,32 @@ function showPrintPreview() {
     document.getElementById('reportOperator').textContent = operator;
     document.getElementById('reportDescription').textContent = description;
     
-    // Establecer fechas
+    // Establecer fechas y número de reporte
     const now = new Date();
     const dateFormatted = now.toLocaleDateString('es-MX');
     const dateTimeFormatted = now.toLocaleDateString('es-MX') + ' ' + now.toLocaleTimeString('es-MX');
     
+    // Generar un número de reporte único basado en la fecha y hora
+    const reportNumber = 'R-' + now.getFullYear() + 
+                         ('0' + (now.getMonth() + 1)).slice(-2) + 
+                         ('0' + now.getDate()).slice(-2) + '-' +
+                         ('0' + now.getHours()).slice(-2) + 
+                         ('0' + now.getMinutes()).slice(-2);
+    
     document.getElementById('reportDate').textContent = dateFormatted;
     document.getElementById('printDate').textContent = dateTimeFormatted;
+    document.getElementById('reportNumber').textContent = reportNumber;
     
     // Mostrar el reporte
     document.getElementById('reportToPrint').style.display = 'block';
     
-    // Abrir ventana de impresión con tamaño específico
-    const printWindow = window.open('', '', 'width=850,height=550');
-    printWindow.document.write('<html><head><title>Reporte de Unidad</title>');
-    printWindow.document.write('<style>');
-    printWindow.document.write('@page { size: 8.5in 5.5in landscape; margin: 0.5in; }');
-    printWindow.document.write('body { width: 7.5in; height: 4.5in; margin: 0; padding: 0; font-family: Arial, sans-serif; }');
-    printWindow.document.write('</style></head><body>');
-    printWindow.document.write(document.getElementById('reportToPrint').innerHTML);
-    printWindow.document.write('</body></html>');
-    printWindow.document.close();
-    printWindow.focus();
+    // Imprimir directamente usando el método nativo de impresión
+    window.print();
     
-    // Imprimir
+    // Ocultar el reporte después de imprimir
     setTimeout(function() {
-        printWindow.print();
-        printWindow.close();
-    }, 500);
-    
-    // Ocultar el reporte en el documento original
-    document.getElementById('reportToPrint').style.display = 'none';
+        document.getElementById('reportToPrint').style.display = 'none';
+    }, 1000);
 }
 </script>
 {% endblock %}
