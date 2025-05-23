@@ -4,31 +4,33 @@
 
 {% block styles %}
 <style>
-    /* Medidas para media carta (tamaño carta estándar dividido en dos) */
-    :root {
-        --report-width: 8.5in;   /* ANCHO: Carta estándar horizontal */
-        --report-height: 5.5in;  /* ALTO: Media carta */
-        --report-padding: 0.5in; /* MARGEN INTERIOR */
-    }
-    
+    /* Estilo de impresión directo */
     @media print {
+        @page {
+            size: 8.5in 5.5in landscape; /* Media carta horizontal */
+            margin: 0;
+        }
+        
         body * {
             visibility: hidden;
         }
+        
         #reportToPrint, #reportToPrint * {
             visibility: visible;
         }
+        
         #reportToPrint {
             position: absolute;
             left: 0;
             top: 0;
-            width: var(--report-width);
-            height: var(--report-height);
+            width: 8.5in;
+            height: 5.5in;
+            padding: 0.5in;
+            box-sizing: border-box;
+            background-color: white;
+            font-size: 12pt;
         }
-        @page {
-            size: var(--report-width) var(--report-height) landscape;
-            margin: 0;
-        }
+        
         /* Mantener exactamente el mismo formato que se ve en pantalla */
         * {
             -webkit-print-color-adjust: exact !important;
@@ -37,15 +39,17 @@
         }
     }
     
+    /* Estilos para la vista previa en pantalla */
     .report-container {
-        width: var(--report-width);
-        height: var(--report-height);
-        padding: var(--report-padding);
+        width: 8.5in;
+        height: 5.5in;
+        padding: 0.5in;
         margin: 0 auto;
         border: 1px solid #ddd;
         box-sizing: border-box;
         background-color: white;
         max-width: 100%;
+        font-size: 12pt;
     }
     
     .repair-line {
@@ -224,13 +228,26 @@ function showPrintPreview() {
     // Mostrar el reporte
     document.getElementById('reportToPrint').style.display = 'block';
     
-    // Imprimir
-    window.print();
+    // Abrir ventana de impresión con tamaño específico
+    const printWindow = window.open('', '', 'width=850,height=550');
+    printWindow.document.write('<html><head><title>Reporte de Unidad</title>');
+    printWindow.document.write('<style>');
+    printWindow.document.write('@page { size: 8.5in 5.5in landscape; margin: 0.5in; }');
+    printWindow.document.write('body { width: 7.5in; height: 4.5in; margin: 0; padding: 0; font-family: Arial, sans-serif; }');
+    printWindow.document.write('</style></head><body>');
+    printWindow.document.write(document.getElementById('reportToPrint').innerHTML);
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.focus();
     
-    // Ocultar el reporte después de imprimir
+    // Imprimir
     setTimeout(function() {
-        document.getElementById('reportToPrint').style.display = 'none';
-    }, 1000);
+        printWindow.print();
+        printWindow.close();
+    }, 500);
+    
+    // Ocultar el reporte en el documento original
+    document.getElementById('reportToPrint').style.display = 'none';
 }
 </script>
 {% endblock %}
