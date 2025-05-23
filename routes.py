@@ -114,20 +114,48 @@ def register_unit():
     return render_template('traffic_control/register_unit.html', form=form)
 
 # Ruta para generar e imprimir el reporte de la unidad en formato media carta
-@app.route('/traffic_control/print_report/<int:unit_id>')
+@app.route('/traffic_control/imprimir-reporte/<int:unit_id>')
 @login_required
-def print_unit_report(unit_id):
+def imprimir_reporte(unit_id):
+    # Verificar permisos
     if current_user.department not in ['traffic_control', 'admin', 'workshop']:
         flash('Acceso denegado. No tienes permiso para ver esta página.', 'danger')
         return redirect(url_for('index'))
     
+    # Obtener datos de la unidad
     unit = Unit.query.get_or_404(unit_id)
-    status_changes = StatusChange.query.filter_by(unit_id=unit_id).order_by(StatusChange.created_at.desc()).all()
     
-    # Pasar la fecha actual para el reporte
-    now = datetime.utcnow()
+    # Formato de fecha actual para el reporte
+    fecha_actual = datetime.now().strftime('%d/%m/%Y')
     
-    return render_template('traffic_control/print_report.html', unit=unit, status_changes=status_changes, now=now)
+    # Renderizar plantilla de impresión
+    return render_template('traffic_control/reporte_impresion.html', 
+                          unit=unit, 
+                          fecha_actual=fecha_actual)
+
+@app.route('/traffic_control/vista-previa-reporte')
+@login_required
+def vista_previa_reporte():
+    """Vista previa del reporte sin crear unidad"""
+    if current_user.department not in ['traffic_control', 'admin', 'workshop']:
+        flash('Acceso denegado. No tienes permiso para ver esta página.', 'danger')
+        return redirect(url_for('index'))
+    
+    # Datos de ejemplo para la vista previa
+    class UnitPreview:
+        pass
+    
+    unit = UnitPreview()
+    unit.unit_number = request.args.get('unit_number', 'MOTORISTA')
+    unit.operator_name = request.args.get('operator_name', 'OPERADOR')
+    unit.description = request.args.get('description', 'DESCRIPCIÓN DEL PROBLEMA')
+    
+    # Formato de fecha actual
+    fecha_actual = datetime.now().strftime('%d/%m/%Y')
+    
+    return render_template('traffic_control/reporte_impresion.html', 
+                          unit=unit, 
+                          fecha_actual=fecha_actual)
 
 @app.route('/traffic_control/confirm_completion/<int:unit_id>', methods=['GET', 'POST'])
 @login_required

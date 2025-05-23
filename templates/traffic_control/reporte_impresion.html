@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Taller</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        @page {
+            size: 8.5in 4in;
+            margin: 0;
+        }
+        .contenedor {
+            width: 8.5in;
+            height: 4in;
+            padding: 0.5in;
+            box-sizing: border-box;
+        }
+        .encabezado {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #000;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+        }
+        .titulo {
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .tabla {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+        .etiqueta {
+            font-weight: bold;
+            width: 100px;
+            font-size: 12px;
+        }
+        .valor {
+            border-bottom: 1px solid #000;
+            padding: 3px 5px;
+        }
+        .seccion-trabajo {
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        .linea {
+            border-bottom: 1px solid #000;
+            height: 25px;
+            margin-bottom: 5px;
+        }
+        .firmas {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+        .firma {
+            border-top: 1px solid #000;
+            width: 45%;
+            text-align: center;
+            padding-top: 5px;
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body onload="window.print()">
+    <div class="contenedor">
+        <div class="encabezado">
+            <div class="titulo">REPORTE DE TALLER</div>
+            <div>{{ fecha_actual }}</div>
+        </div>
+        
+        <table class="tabla">
+            <tr>
+                <td class="etiqueta">MOTORISTA:</td>
+                <td class="valor">{{ unit.unit_number }}</td>
+            </tr>
+            <tr>
+                <td class="etiqueta">OPERADOR:</td>
+                <td class="valor">{{ unit.operator_name }}</td>
+            </tr>
+            <tr>
+                <td class="etiqueta">SOLICITUD:</td>
+                <td class="valor">{{ unit.description }}</td>
+            </tr>
+        </table>
+        
+        <div class="seccion-trabajo">TRABAJO DE TALLER REALIZADO:</div>
+        <div class="linea"></div>
+        <div class="linea"></div>
+        <div class="linea"></div>
+        <div class="linea"></div>
+        <div class="linea"></div>
+        <div class="linea"></div>
+        <div class="linea"></div>
+        
+        <div class="firmas">
+            <div class="firma">Firma del Mecánico</div>
+            <div class="firma">V° B° Supervisor</div>
+        </div>
+    </div>
+</body>
+</html>
