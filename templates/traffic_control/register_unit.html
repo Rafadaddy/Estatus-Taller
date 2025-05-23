@@ -185,39 +185,51 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function showPrintPreview() {
-    // Obtener los valores del formulario
-    const unitNumber = document.getElementById('unit_number').value;
-    const operator = document.getElementById('operator_name').value;
-    const description = document.getElementById('description').value;
+    try {
+        // Obtener los valores del formulario
+        const unitNumber = document.getElementById('unit_number').value;
+        const operator = document.getElementById('operator_name').value;
+        const description = document.getElementById('description').value;
 
-    if (!unitNumber || !operator || !description) {
-        alert('Por favor complete todos los campos del formulario antes de imprimir el reporte.');
-        return;
+        if (!unitNumber || !operator || !description) {
+            alert('Por favor complete todos los campos del formulario antes de imprimir el reporte.');
+            return;
+        }
+
+        // Verificar y actualizar cada elemento solo si existe
+        const unitNumberElement = document.getElementById('reportUnitNumber');
+        if (unitNumberElement) unitNumberElement.textContent = unitNumber;
+
+        const operatorElement = document.getElementById('reportOperator');
+        if (operatorElement) operatorElement.textContent = operator;
+
+        const descriptionElement = document.getElementById('reportDescription');
+        if (descriptionElement) descriptionElement.textContent = description;
+
+        // Establecer fechas
+        const now = new Date();
+        const dateFormatted = now.toLocaleDateString('es-MX');
+        
+        const dateElement = document.getElementById('reportDate');
+        if (dateElement) dateElement.textContent = dateFormatted;
+
+        // Mostrar el reporte de forma segura
+        const reportElement = document.getElementById('reportToPrint');
+        if (reportElement) {
+            reportElement.style.display = 'block';
+            
+            // Imprimir
+            window.print();
+            
+            // Ocultar el reporte después de imprimir
+            setTimeout(function() {
+                reportElement.style.display = 'none';
+            }, 1000);
+        }
+    } catch (error) {
+        console.error("Error al generar el reporte:", error);
+        alert("Hubo un problema al generar el reporte. Por favor intente nuevamente.");
     }
-
-    // Llenar los datos del reporte
-    document.getElementById('reportUnitNumber').textContent = unitNumber;
-    document.getElementById('reportOperator').textContent = operator;
-    document.getElementById('reportDescription').textContent = description;
-
-    // Establecer fechas
-    const now = new Date();
-    const dateFormatted = now.toLocaleDateString('es-MX');
-    const dateTimeFormatted = now.toLocaleDateString('es-MX') + ' ' + now.toLocaleTimeString('es-MX');
-
-    document.getElementById('reportDate').textContent = dateFormatted;
-    document.getElementById('printDate').textContent = dateTimeFormatted;
-
-    // Mostrar el reporte
-    document.getElementById('reportToPrint').style.display = 'block';
-
-    // Imprimir
-    window.print();
-
-    // Ocultar el reporte después de imprimir
-    setTimeout(function() {
-        document.getElementById('reportToPrint').style.display = 'none';
-    }, 1000);
 }
 </script>
 {% endblock %}
