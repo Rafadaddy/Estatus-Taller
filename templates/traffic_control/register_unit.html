@@ -29,6 +29,12 @@
             size: var(--report-width) var(--report-height) portrait;
             margin: 0;
         }
+        /* Mantener exactamente el mismo formato que se ve en pantalla */
+        * {
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
     }
     
     .report-container {
