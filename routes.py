@@ -109,7 +109,7 @@ def register_unit():
         Notification.create_for_unit_register(unit, current_user)
         
         flash(f'Unidad {unit.unit_number} ha sido registrada correctamente!', 'success')
-        return redirect(url_for('traffic_control_dashboard'))
+        return redirect(url_for('print_unit_report', unit_id=unit.id))
     
     return render_template('traffic_control/register_unit.html', form=form)
 

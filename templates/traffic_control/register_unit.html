@@ -4,51 +4,41 @@
 
 {% block styles %}
 <style>
-    /* Estilos para impresión en media carta horizontal */
+    /* Aquí puedes cambiar las medidas del reporte */
+    :root {
+        --report-width: 5.5in;   /* ANCHO: Modifica este valor según necesites */
+        --report-height: 8.5in;  /* ALTO: Modifica este valor según necesites */
+        --report-padding: 0.25in; /* MARGEN INTERIOR: Modifica según necesites */
+    }
+    
     @media print {
-        @page {
-            size: 8.5in 5.5in landscape; /* Media carta horizontal */
-            margin: 0.5in;
-        }
-        
         body * {
             visibility: hidden;
         }
-        
         #reportToPrint, #reportToPrint * {
             visibility: visible;
         }
-        
         #reportToPrint {
             position: absolute;
             left: 0;
             top: 0;
-            width: 7.5in;
-            height: 4.5in;
-            box-sizing: border-box;
-            background-color: white;
-            font-size: 12pt;
+            width: var(--report-width);
+            height: var(--report-height);
         }
-        
-        /* Mantener exactamente el mismo formato que se ve en pantalla */
-        * {
-            -webkit-print-color-adjust: exact !important;
-            color-adjust: exact !important;
-            print-color-adjust: exact !important;
+        @page {
+            size: var(--report-width) var(--report-height) portrait;
+            margin: 0;
         }
     }
     
-    /* Estilos para la vista previa en pantalla */
     .report-container {
-        width: 100%;
-        max-width: 850px; /* Equivalente a aprox. 8.5in */
-        height: 550px; /* Equivalente a aprox. 5.5in */
-        padding: 50px;
+        width: var(--report-width);
+        height: var(--report-height);
+        padding: var(--report-padding);
         margin: 0 auto;
         border: 1px solid #ddd;
         box-sizing: border-box;
         background-color: white;
-        font-size: 12pt;
     }
     
     .repair-line {
@@ -136,10 +126,7 @@
         <div style="text-align: center; border-bottom: 2px solid #7B2CBF; padding-bottom: 10px; margin-bottom: 15px;">
             <div style="font-size: 16px; font-weight: bold; margin: 5px 0; color: #410476;">SISTEMA DE GESTIÓN DE TALLER</div>
             <div style="font-size: 14px; margin: 5px 0;">REPORTE DE UNIDAD PARA REPARACIÓN</div>
-            <div style="display: flex; justify-content: space-between; margin-top: 5px;">
-                <div>Fecha: <span id="reportDate"></span></div>
-                <div>No. Reporte: <span id="reportNumber"></span></div>
-            </div>
+            <div>Fecha: <span id="reportDate"></span></div>
         </div>
         
         <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 15px; background-color: #f9f9f9;">
@@ -219,26 +206,18 @@ function showPrintPreview() {
     document.getElementById('reportOperator').textContent = operator;
     document.getElementById('reportDescription').textContent = description;
     
-    // Establecer fechas y número de reporte
+    // Establecer fechas
     const now = new Date();
     const dateFormatted = now.toLocaleDateString('es-MX');
     const dateTimeFormatted = now.toLocaleDateString('es-MX') + ' ' + now.toLocaleTimeString('es-MX');
     
-    // Generar un número de reporte único basado en la fecha y hora
-    const reportNumber = 'R-' + now.getFullYear() + 
-                         ('0' + (now.getMonth() + 1)).slice(-2) + 
-                         ('0' + now.getDate()).slice(-2) + '-' +
-                         ('0' + now.getHours()).slice(-2) + 
-                         ('0' + now.getMinutes()).slice(-2);
-    
     document.getElementById('reportDate').textContent = dateFormatted;
     document.getElementById('printDate').textContent = dateTimeFormatted;
-    document.getElementById('reportNumber').textContent = reportNumber;
     
     // Mostrar el reporte
     document.getElementById('reportToPrint').style.display = 'block';
     
-    // Imprimir directamente usando el método nativo de impresión
+    // Imprimir
     window.print();
     
     // Ocultar el reporte después de imprimir
