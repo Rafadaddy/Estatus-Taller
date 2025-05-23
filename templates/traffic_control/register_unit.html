@@ -4,11 +4,11 @@
 
 {% block styles %}
 <style>
-    /* Aquí puedes cambiar las medidas del reporte */
+    /* Medidas para media carta (tamaño carta estándar dividido en dos) */
     :root {
-        --report-width: 5.5in;   /* ANCHO: Modifica este valor según necesites */
-        --report-height: 8.5in;  /* ALTO: Modifica este valor según necesites */
-        --report-padding: 0.25in; /* MARGEN INTERIOR: Modifica según necesites */
+        --report-width: 8.5in;   /* ANCHO: Carta estándar horizontal */
+        --report-height: 5.5in;  /* ALTO: Media carta */
+        --report-padding: 0.5in; /* MARGEN INTERIOR */
     }
     
     @media print {
@@ -26,7 +26,7 @@
             height: var(--report-height);
         }
         @page {
-            size: var(--report-width) var(--report-height) portrait;
+            size: var(--report-width) var(--report-height) landscape;
             margin: 0;
         }
         /* Mantener exactamente el mismo formato que se ve en pantalla */
@@ -45,6 +45,7 @@
         border: 1px solid #ddd;
         box-sizing: border-box;
         background-color: white;
+        max-width: 100%;
     }
     
     .repair-line {
