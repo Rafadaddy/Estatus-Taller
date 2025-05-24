@@ -1,9 +1,6 @@
 import os
-from flask import Flask, render_template, flash, redirect, url_for, request, jsonify
-from flask_login import LoginManager, login_user, logout_user, current_user, login_required
-from werkzeug.security import generate_password_hash
-from datetime import datetime
-import pandas as pd
+from flask import Flask
+from flask_login import LoginManager
 
 # Crear la aplicación Flask
 app = Flask(__name__)
@@ -16,15 +13,13 @@ login_manager.login_view = 'login'
 login_manager.login_message = 'Por favor inicia sesión para acceder a esta página'
 login_manager.login_message_category = 'warning'
 
-# Importar modelos y formularios
-from excel_models import User, Unit, StatusChange, PartRequest, Notification, load_user
-from forms import LoginForm, RegisterUnitForm, UpdateStatusForm, PartRequestForm, UpdatePartRequestForm, UserForm
+# Importar la función de carga de usuario desde excel_models
+from excel_models import load_user
 
 # Configurar la función de carga de usuario para Flask-Login
 login_manager.user_loader(load_user)
 
-# Importar rutas
-from routes import *
+# No importamos rutas aquí para evitar importaciones circulares
 
 # Configurar manejo de errores
 @app.errorhandler(404)

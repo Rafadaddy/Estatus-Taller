@@ -40,14 +40,15 @@ def init_excel_db():
         
         # Crear un administrador por defecto
         admin_id = 1
-        users_df = users_df.append({
+        admin_user = {
             'id': admin_id,
             'username': 'admin',
             'email': 'admin@example.com',
             'password_hash': generate_password_hash('admin'),
             'department': 'admin',
             'created_at': datetime.now().isoformat()
-        }, ignore_index=True)
+        }
+        users_df = pd.concat([users_df, pd.DataFrame([admin_user])], ignore_index=True)
         
         # Guardar en Excel
         with pd.ExcelWriter(DB_FILE, engine='openpyxl') as writer:
@@ -127,7 +128,7 @@ class ExcelUser:
             'created_at': datetime.now().isoformat()
         }
         
-        df = df.append(new_user, ignore_index=True)
+        df = pd.concat([df, pd.DataFrame([new_user])], ignore_index=True)
         
         # Guardar cambios
         with pd.ExcelWriter(DB_FILE, engine='openpyxl') as writer:
@@ -200,7 +201,7 @@ class ExcelUnit:
             'created_at': datetime.now().isoformat()
         }
         
-        df = df.append(new_unit, ignore_index=True)
+        df = pd.concat([df, pd.DataFrame([new_unit])], ignore_index=True)
         
         # Guardar cambios
         with pd.ExcelWriter(DB_FILE, engine='openpyxl') as writer:
@@ -245,7 +246,7 @@ class ExcelUnit:
             'created_at': datetime.now().isoformat()
         }
         
-        status_changes_df = status_changes_df.append(new_status_change, ignore_index=True)
+        status_changes_df = pd.concat([status_changes_df, pd.DataFrame([new_status_change])], ignore_index=True)
         
         # Guardar cambios
         with pd.ExcelWriter(DB_FILE, engine='openpyxl') as writer:
@@ -335,7 +336,7 @@ class ExcelPartRequest:
             'notes': notes if notes else ""
         }
         
-        df = df.append(new_request, ignore_index=True)
+        df = pd.concat([df, pd.DataFrame([new_request])], ignore_index=True)
         
         # Guardar cambios
         with pd.ExcelWriter(DB_FILE, engine='openpyxl') as writer:
@@ -439,7 +440,7 @@ class ExcelNotification:
             'created_at': datetime.now().isoformat()
         }
         
-        df = df.append(new_notification, ignore_index=True)
+        df = pd.concat([df, pd.DataFrame([new_notification])], ignore_index=True)
         
         # Guardar cambios
         with pd.ExcelWriter(DB_FILE, engine='openpyxl') as writer:
