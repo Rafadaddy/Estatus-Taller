@@ -45,6 +45,9 @@ def login():
             login_user(user)
             next_page = request.args.get('next')
             flash('Login successful!', 'success')
+            # Validate that next_page is a relative URL to prevent open redirect
+            if next_page and not next_page.startswith('/'):
+                next_page = None
             return redirect(next_page or url_for('index'))
         else:
             flash('Invalid username or password', 'danger')
