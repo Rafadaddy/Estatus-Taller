@@ -44,6 +44,9 @@ def login():
             login_user(user)
             flash(f'Bienvenido, {user.username}!', 'success')
             next_page = request.args.get('next')
+            # Validar que next_page es una URL relativa para prevenir redirecciones abiertas
+            if next_page and not next_page.startswith('/'):
+                next_page = None
             return redirect(next_page) if next_page else redirect(url_for('index'))
         else:
             flash('Credenciales incorrectas. Intenta de nuevo.', 'danger')
